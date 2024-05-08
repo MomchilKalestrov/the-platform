@@ -1,21 +1,27 @@
+* {
+    font-family: "Noto Sans", sans-serif;
+}
+
 body {
     margin: 0px;
     padding: 0px;
     width: 100vw;
+    height: 100vh;
 }
 
 #root {
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: 30ch calc(100vw - 30ch);
-    grid-template-rows: 4rem calc(100vh - 4rem);
+    gap: 1rem;
+    grid-template-columns: 0px calc(5ch + 15%) calc(85% - 5ch - 3rem) 0px;
+    grid-template-rows: 0px 2rem auto 0px;
     grid-template-areas: 
-        "header header"
-        "nav main";
+        ". . . ."
+        ". header header ."
+        ". nav main ."
+        ". . . .";
     background-color: #1b1b1b;
-}
-
-#root * {
-    padding: 1rem;
 }
 
 header {
@@ -23,37 +29,81 @@ header {
     display: flex;
     justify-content: space-between;
     align-content: center;
+    flex-wrap: wrap;
+}
+
+header img {
+    aspect-ratio: 141 / 17;
+    padding: 0px !important;
+    height: clamp(0.5rem, 8vw, 2rem);
 }
 
 header div {
+    margin-left: 1ch;
     padding: 0px !important;
 }
 
-header div input {
-    padding: 0.5rem !important;
+.search-field, .search-button {
+    padding: 0.25rem !important;
     background-color: #282a2c;
+    color: #C4C7C5;
     border: none;
     user-select: none;
     outline: none;
-    border-radius: 0px 50% 50% 0px;
+    font-size: 1.25rem;
 }
 
-header div > input {
-    border-radius: 50% 0px 0px 50% !important;
+.search-button {
+    border-radius: 0px 1.5rem 1.5rem 0px;
+    padding-right: 0.75rem !important;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.search-field {
+    border-radius: 1.5rem 0px 0px 1.5rem;
+    padding-left: 0.75rem !important;
+    width: 15ch;
 }
 
 main {
     grid-area: main;
     border-radius: 2rem;
     background-color: #131314;
-    margin: 1rem;
+    padding: 1rem;
 }
 
 nav {
     grid-area: nav;
 }
 
-header img {
-    padding: 0px !important;
-    height: 100%;
+@media (max-width: 586px) {
+    #root {
+        grid-template-rows: 0px 5rem auto 0px;
+        grid-template-columns: 0px auto 0px;
+        grid-template-areas: 
+        ". . ."
+        ". header ."
+        ". main ."
+        ". . ." !important;
+    }
+
+    nav {
+        display: none;
+    }
+
+    header {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    header div {
+        width: calc(100% - 4rem);
+        margin: 0px !important;
+    }
+
+    .search-field {
+        width: calc(100% - 8.8ch - 2px); /* crappy math */
+    }
 }

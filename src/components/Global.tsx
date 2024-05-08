@@ -7,8 +7,8 @@ export class SharedLayout extends Component<any, any> {
             <header>
                 <img src='/head.svg' alt='title'/>
                 <div>
-                    <input></input>
-                    <input type='button'></input>
+                    <input className='search-field' type='text' />
+                    <input className='search-button' type='button' value='Search' />
                 </div>
             </header>
             <nav></nav>
