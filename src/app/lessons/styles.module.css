@@ -1,0 +1,28 @@
+.searchField, .searchButton {
+    padding: 0.25rem !important;
+    background-color: #282a2c;
+    color: #C4C7C5;
+    border: none;
+    user-select: none;
+    outline: none;
+    font-size: 1.25rem;
+}
+
+.searchButton {
+    border-radius: 0px 1.5rem 1.5rem 0px;
+    padding-right: 0.75rem !important;
+    margin-left: 2px;
+    font-weight: bold;
+}
+
+.searchField {
+    border-radius: 1.5rem 0px 0px 1.5rem;
+    padding-left: 0.75rem !important;
+    width: 15ch;
+}
+
+@media (max-width: 586px) {
+    .searchField {
+        width: calc(100% - 10ch); /* crappy math */
+    }
+}
