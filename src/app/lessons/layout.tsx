@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { useRouter } from 'next/navigation';
+import { List } from './logic/reader'
+import { RenderMenu } from './logic/renderer'
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './styles.module.css';
 import './global.css';
@@ -20,18 +21,39 @@ export default function RootLayout({
           <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div className={ styles.SearchContainer }>
             <input className={`form-control ${styles.SearchField}`} placeholder='...'/>
-            <button onClick={ Search } className={`btn btn-outline-light ${styles.SearchButton}`}>Search</button>
+            <button className={`btn btn-outline-light ${styles.SearchButton}`}>🔎︎</button>
           </div>
         </nav>
       </header>
       <div className={ `container  ${ styles.ToBottom }` }>
         <div className='row'>
-          <nav className={ `col ${styles.LessonsList}` }></nav>
+          <nav id='menuList' className={ `col ${styles.LessonsList}` }>
+            <button id='menuCloseButton'>✖</button>
+            { RenderMenu(List()) }
+          </nav>
           <main className='col' style={ { flexBasis: '50%' } }>
+            <button id='menuButton' className={ `btn btn-outline-dark ${ styles.MobileView }` }>☰ More</button>
             { children }
           </main>
         </div>
       </div>
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.getElementById('menuButton').addEventListener('click', function() {
+            let menuListDesign = document.getElementById('menuList').style;
+            if(menuListDesign.display !== 'block')
+              menuListDesign.display = 'block';
+            else
+              menuListDesign.display = 'none';
+        });
+        document.getElementById('menuCloseButton').addEventListener('click', function() {
+          let menuListDesign = document.getElementById('menuList').style;
+          menuListDesign.display = 'none';
+        });
+        window.addEventListener('resize', function() {
+          let menuListDesign = document.getElementById('menuList').style;
+          menuListDesign.display = '';
+        });
+      `}} />
     </>
   );
 }

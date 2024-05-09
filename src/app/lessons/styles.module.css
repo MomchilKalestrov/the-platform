@@ -2,6 +2,8 @@
     aspect-ratio: 141 / 17;
     height: 2.6rem;
     padding: 0.3rem 0px 0.3rem 0px;
+    width: calc(2rem * 141 / 17);
+    max-width: 100%;
 }
 
 .ToBottom {
@@ -16,20 +18,56 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
-    width: 15.5rem;
+    width: 15.25rem;
 }
 
 .SearchField {
-    width: 10rem;
+    width: calc(100% - 2.75rem);
     outline: none;
     border: none;
 }
 
 .SearchButton {
-    width: 5rem;
+    width: 2.5rem;
+}
+
+.LessonsList {
+    padding: calc(var(--bs-gutter-x) * 0.5);
+    text-align: right;
+}
+
+.LessonsList a {
+    color: #000000;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+
+.LessonsList a:hover {
+    color: #363636;
+    text-decoration: underline;
+    display: block;
+    width: 100%;
+}
+
+.LessonsList button {
+    display: none;
+}
+
+.MobileView {
+    display: none;
 }
 
 @media (max-width: 768px) {
+    .NavTitle {
+        padding: 0px 0.5rem 0.3rem 0.5rem;
+    }
+
+    .SearchContainer {
+        width: 100%;
+        padding: 0px 0.5rem 0px 0.5rem;
+    }
+
     .ToBottom {
         height: calc(100% - 6rem);
     }
@@ -38,5 +76,32 @@
 @media (max-width: 575px) {
     .LessonsList {
         display: none;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: min(50%, 12rem);
+        height: 100vh;
+        background-color: white;
+        text-align: left;
+    }
+    
+    .LessonsList button {
+        display: block;
+        position: absolute;
+        margin: 0px;
+        transform: translate(25%, -25%);
+        right: calc(var(--bs-gutter-x) * 0.5);
+        aspect-ratio: 1;
+        height: 1.5rem;
+        border: none;
+        background-color: transparent;
+    }
+
+    .ToBottom div main {
+        border: none;
+    }
+
+    .MobileView {
+        display: block;
     }
 }

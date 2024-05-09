@@ -1,4 +1,7 @@
-export default function Render(data: string) {
+import Link from "next/link";
+import type { Listings } from "./reader";
+
+export function RenderLesson(data: string): JSX.Element {
     let html: Array<JSX.Element> = [];
     let elements: Array<string> = data.split('<%=');
     for(let i: number = 0; i < elements.length; ++i) {
@@ -16,5 +19,13 @@ export default function Render(data: string) {
                 break;
         }
     }
-    return <div>{ html }</div>;
+    return <>{ html }</>;
+}
+
+export function RenderMenu(data: Listings): JSX.Element {
+    let html: Array<JSX.Element> = [];
+    
+    for(let i: number = 0; i < data.titles.length; ++i)
+        html.push(<Link key={ i } href={ `/lessons/?lesson=${ data.URIs[i] }` }>{ data.titles[i] }</Link>);
+    return <>{ html }</>;
 }

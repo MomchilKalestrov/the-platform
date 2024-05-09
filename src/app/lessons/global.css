@@ -1,10 +1,10 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.75rem, 10vw, 1rem);
     margin: 0px;
     padding: 0px;
     width: 100vw;
     height: 100vh;
-
 }
 
 header {
@@ -19,13 +19,27 @@ main {
     border-right: 2px solid #DEE2E6;
 }
 
+h2 {
+    text-align: center;
+    padding-bottom: calc(var(--bs-gutter-x) * 0.5);
+    border-bottom: 2px solid #DEE2E6;
+    margin-bottom: calc(var(--bs-gutter-x) * 0.5);
+}
+
 @media (max-width: 768px) {
     header {
         height: 6rem;
     }
+    
     header .container {
         display: flex !important;
         justify-content: center !important;
         align-content: center;
+    }
+}
+
+@media (max-width: 575px) {
+    main {
+        border: none;
     }
 }
