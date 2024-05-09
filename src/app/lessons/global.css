@@ -12,5 +12,20 @@ header {
 }
 
 main {
+    padding: calc(var(--bs-gutter-x) * 0.5);
+    color: #151515 !important;
     background-color: #f8f9fa;
+    border-left: 2px solid #DEE2E6;
+    border-right: 2px solid #DEE2E6;
+}
+
+@media (max-width: 768px) {
+    header {
+        height: 6rem;
+    }
+    header .container {
+        display: flex !important;
+        justify-content: center !important;
+        align-content: center;
+    }
 }

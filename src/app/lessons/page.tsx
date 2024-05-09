@@ -11,5 +11,5 @@ export default function Page({
   // We get the lesson from the URL parameter
   let lesson : string = Reader(searchParams.lesson as string);
   
-  return (<h1>{ Render(lesson) }</h1>);
+  return Render(lesson);
 }
