@@ -1,5 +1,6 @@
 
 import Reader from './logic/reader'
+import Render from './logic/renderer'
 
 // Anything before the return is server sided
 export default function Page({
@@ -10,5 +11,5 @@ export default function Page({
   // We get the lesson from the URL parameter
   let lesson : string = Reader(searchParams.lesson as string);
   
-  return (<h1>{ lesson }</h1>);
+  return (<h1>{ Render(lesson) }</h1>);
 }

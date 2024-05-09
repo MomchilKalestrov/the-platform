@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image'
+import Image from 'next/image';
+import 'bootstrap/dist/css/bootstrap.css';
 import styles from './styles.module.css';
-import head from '../head.svg'
+import head from '../head.svg';
 import './global.css';
 
 export const metadata: Metadata = {
@@ -16,17 +17,23 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <header>
-        <Image src={ head } alt='title'/>
-        <div>
-          <input className={ styles.searchField } type='text' />
-          <input className={ styles.searchButton } type='button' value='Search' />
-        </div>
+      <header className='navbar small navbar-dark'>
+        <nav className='container navbar-expand-md px-0 px-md-3'>
+          <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
+          <div className={ styles.SearchContainer }>
+            <input className={`form-control ${styles.SearchField}`} placeholder='...'/>
+            <button className={`btn btn-outline-light ${styles.SearchButton}`}>Search</button>
+          </div>
+        </nav>
       </header>
-      <nav></nav>
-      <main>
-        { children }
-      </main>
+      <div className={ 'container ' + styles.ToBottom }>
+        <div className='row'>
+          <nav className='col'></nav>
+          <main className='col' style={ { flexBasis: '50%' } }>
+            { children }
+          </main>
+        </div>
+      </div>
     </>
   );
 }
