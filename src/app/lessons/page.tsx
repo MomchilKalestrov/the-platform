@@ -1,6 +1,7 @@
 
 import Reader, { List, type Listing } from './logic/reader'
 import { RenderLesson, RenderSearchResult } from './logic/renderer'
+import Search from './logic/search'
 
 // Anything before the return is server sided
 export default function Page({
@@ -17,9 +18,7 @@ export default function Page({
   if(query === undefined) return RenderLesson(lesson);
 
   // Start the actual search
-  let filteredLessons: Array<Listing> = List().filter(lesson =>
-    lesson.title.toLowerCase().includes(query.toLowerCase())
-  );
+  let filteredLessons: Array<Listing> = Search(query);
 
   return RenderSearchResult(filteredLessons, query);
 }

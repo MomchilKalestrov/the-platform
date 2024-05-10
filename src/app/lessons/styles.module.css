@@ -1,8 +1,8 @@
 .NavTitle {
-    aspect-ratio: 141 / 17;
+    aspect-ratio: 126 / 17;
     height: 2.6rem;
     padding: 0.3rem 0px 0.3rem 0px;
-    width: calc(2rem * 141 / 17);
+    width: calc(2rem * 126 / 17);
     max-width: 100%;
 }
 

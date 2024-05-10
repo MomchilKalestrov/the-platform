@@ -4,3 +4,7 @@ This is a title
 This is a paragraph
 <%=button=%>
 button<%%>/
+<%=code=%>
+function Add(a, b) {
+    return a + b;
+}
