@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Listing } from "./reader";
+import type { Directory, Listing } from "./reader";
 
 export function RenderLesson(data: string): JSX.Element {
     let html: Array<JSX.Element> = [];
@@ -28,11 +28,28 @@ export function RenderLesson(data: string): JSX.Element {
     return <>{ html }</>;
 }
 
-export function RenderMenu(data: Array<Listing>): JSX.Element {
+export function RenderMenu(data: Array<Directory>): JSX.Element {
     let html: Array<JSX.Element> = [];
     
-    for(let i: number = 0; i < data.length; ++i)
-        html.push(<Link key={ i } href={ `/lessons/?lesson=${ data[i].URI }` }>{ data[i].title }</Link>);
+
+    for(let i: number = 0; i < data.length; ++i) {
+        let lessons: Array<JSX.Element> = [];
+        for(let j: number = 0; j < data[i].lessons.length; ++j)
+            lessons.push(
+                <Link
+                    key={ i }
+                    href={ `/lessons/?lesson=${ data[i].URI }/${ data[i].lessons[j].URI }` }
+                    >
+                        { data[i].lessons[j].title }
+                </Link>
+            );
+        
+        html.push(
+            <>
+                <p>{ data[i].title }</p>
+                { lessons }
+            </>);
+    }
 
     return <>{ html }</>;
 }

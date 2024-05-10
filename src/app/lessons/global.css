@@ -37,6 +37,7 @@ main p {
 }
 
 main a {
+    display: block !important;
     text-align: center;
     margin-left: calc(50% - min(50%, 7.5rem));
     width: min(100%, 15rem);

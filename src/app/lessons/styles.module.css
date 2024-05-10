@@ -1,3 +1,4 @@
+/* Good luck understanding ANY of these selectors. I REALLY mean it. */
 .NavTitle {
     aspect-ratio: 126 / 17;
     height: 2.6rem;
@@ -35,6 +36,19 @@
     padding: calc(var(--bs-gutter-x) * 0.5);
 }
 
+.LessonsList button {
+    display: none;
+}
+
+.LessonsList p {
+    margin: calc(var(--bs-gutter-x) * 0.5) 0;
+    font-weight: bolder;
+}
+
+.LessonsList button + p {
+    margin-top: 0 !important;
+}
+
 .LessonsList a {
     color: #000000;
     text-decoration: none;
@@ -47,10 +61,6 @@
     text-decoration: underline;
     display: block;
     width: 100%;
-}
-
-.LessonsList button {
-    display: none;
 }
 
 .MobileView {

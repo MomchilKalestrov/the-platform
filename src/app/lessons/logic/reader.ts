@@ -1,8 +1,14 @@
 import * as fs from 'fs';
 
+export type Directory = {
+    title:   string,
+    URI:     string,
+    lessons: Array<Listing>
+}
+
 export type Listing = {
-    title: string;
-    URI: string;
+    title: string,
+    URI:   string
 }
 
 export default function Reader(lesson: string = 'bad'): string {
@@ -17,21 +23,25 @@ export default function Reader(lesson: string = 'bad'): string {
     return fs.readFileSync(`./lessons_data/${lesson}.lesson`, 'utf8');
 }
 
-export function List(): Array<Listing> {
-    let lessons: Array<Listing> = [];
+export function List(): Array<Directory> {
+    let result: Array<Directory> = [];
     // Get the available lessons.
     let directories: Array<string> = fs
-    .readdirSync('./lessons_data')
-    .filter(lesson => lesson !== 'bad.lesson')
-    .map(lesson => lesson.replace('.lesson', ''));
+        .readdirSync('./lessons_data')
+        .filter(lesson => lesson !== 'bad.lesson');
 
     // Convert them into a Listings array.
-    for(let i: number = 0; i < directories.length; ++i) {
-        lessons.push({
+    for(let i: number = 0; i < directories.length; ++i)
+        result.push({
+            title: directories[i].replaceAll('_', ' '),
             URI: directories[i],
-            title: directories[i].replaceAll('_', ' ')
+            lessons: fs
+            .readdirSync(`./lessons_data/${ directories[i] }`)
+            .map(lesson => ({
+                    URI: lesson.replace('.lesson', ''),
+                    title: lesson.replace('.lesson', '').replaceAll('_', ' ')
+            }))
         });
-    }
 
-    return lessons;
+    return result;
 }
