@@ -16,18 +16,17 @@ export default function Reader(lesson: string = 'bad'): string {
     // For extra safety, we will check if there are any dots,
     // because they could be used to go back a directory,
     // or even multiple, and read files it's not supposed to.
-    if(!fs.existsSync(`./lessons_data/${lesson}.lesson`) || lesson.includes('..'))
-        lesson = 'bad';
+    if(!fs.existsSync(`${ process.env.LESSONS_URL as string }${lesson}.lesson`) || lesson.includes('..'))
+        lesson = process.env.BAD_LESSON_FILE as string;
     // I was going to put a try catch here but fuck it we ball.
-    List();
-    return fs.readFileSync(`./lessons_data/${lesson}.lesson`, 'utf8');
+    return fs.readFileSync(`${ process.env.LESSONS_URL as string }${lesson}.lesson`, 'utf8');
 }
 
 export function List(): Array<Directory> {
     let result: Array<Directory> = [];
     // Get the available lessons.
     let directories: Array<string> = fs
-        .readdirSync('./lessons_data')
+        .readdirSync(process.env.LESSONS_URL as string)
         .filter(lesson => lesson !== 'bad.lesson');
 
     // Convert them into a Listings array.
@@ -36,7 +35,7 @@ export function List(): Array<Directory> {
             title: directories[i].replaceAll('_', ' '),
             URI: directories[i],
             lessons: fs
-            .readdirSync(`./lessons_data/${ directories[i] }`)
+            .readdirSync(`${ process.env.LESSONS_URL as string }${ directories[i] }`)
             .map(lesson => ({
                     URI: lesson.replace('.lesson', ''),
                     title: lesson.replace('.lesson', '').replaceAll('_', ' ')

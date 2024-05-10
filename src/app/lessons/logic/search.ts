@@ -1,4 +1,4 @@
-import { type Listing, List, Directory } from './reader'
+import { type Listing, List } from './reader'
 
 function similarity(a: string, b: string) {
     const matrix = [];
@@ -23,14 +23,17 @@ function similarity(a: string, b: string) {
 
 export default function Search(query: string): Array<Listing> {
     let lessons: Array<Listing> = [];
+    // Get the actual lessons, not the directories
     List().map(directory =>
       lessons = lessons.concat(directory.lessons.map(lesson => ({
         URI: `${ directory.URI }/${ lesson.URI }`,
         title: lesson.title
       }))));
-
-      console.log(lessons)
     
+    // Conduct the search.
+    // First find if there are any lessons where the query is a substring.
+    // Then find any lessons that are 50% or more similar to the query.
+    // After all that, remove the duplicates.
     let results: Array<Listing> = Array.from(
         new Set(lessons
             .filter(lesson =>
@@ -42,7 +45,8 @@ export default function Search(query: string): Array<Listing> {
                 similarity(
                     lesson.title.toLowerCase(),
                     query.toLowerCase()
-                ) >= 0.5
+                ) >= (process.env.QUERY_ACCURACY as unknown as number) 
+                // This is beyond fucking retarded, why don't you let me transpile without converting it to an unknown before a number
     ))));
 
     return results;
