@@ -1,6 +1,6 @@
 
 import Reader, { List, type Listing } from './logic/reader'
-import { RenderLesson, RenderMenu } from './logic/renderer'
+import { RenderLesson, RenderSearchResult } from './logic/renderer'
 
 // Anything before the return is server sided
 export default function Page({
@@ -21,5 +21,5 @@ export default function Page({
     lesson.title.toLowerCase().includes(query.toLowerCase())
   );
 
-  return RenderMenu(filteredLessons);
+  return RenderSearchResult(filteredLessons, query);
 }

@@ -8,12 +8,9 @@ export function RenderLesson(data: string): JSX.Element {
         let type: string = elements[i].split('=%>')[0].replace(' ', '\0') || 'N/A';
         let data: string = elements[i].split('=%>')[1] || 'N/A';
         switch(type) {
-            case 'title':
-                html.push(<h2 key={ i }>{ data }</h2>);
-                break;
-            case 'paragraph':
-                html.push(<p key={ i }>{ data }</p>);
-                break;
+            case 'title':     html.push(<h2 key={ i }>{ data }</h2>);     break;
+            case 'paragraph': html.push(<p key={ i }>{ data }</p>);       break;
+            case 'code':      html.push(<code key={ i }>{ data }</code>); break;
             case 'button':
                 html.push(
                     <Link
@@ -25,11 +22,9 @@ export function RenderLesson(data: string): JSX.Element {
                     </Link>
                 );
                 break;
-            case 'code':
-                html.push(<code key={ i }>{ data }</code>);
-                break;
         }
     }
+
     return <>{ html }</>;
 }
 
@@ -38,5 +33,35 @@ export function RenderMenu(data: Array<Listing>): JSX.Element {
     
     for(let i: number = 0; i < data.length; ++i)
         html.push(<Link key={ i } href={ `/lessons/?lesson=${ data[i].URI }` }>{ data[i].title }</Link>);
+
     return <>{ html }</>;
+}
+
+export function RenderSearchResult(data: Array<Listing>, search: string): JSX.Element {
+    let html: Array<JSX.Element> = [];
+    
+    for(let i: number = 0; i < data.length; ++i)
+        html.push(
+            <div key={ i } className="col-sm-6" style={ { width: 'min(100%, 15rem)', height: 'min-content' } }>
+                <div className="card">
+                    <div className="card-body" style={ { margin: '0px' } }>
+                        <h5 className="card-title">{ data[i].title }</h5>
+                        <Link
+                        style={ { width: '100%', margin: '0px', transform: 'translateX(0%)' } }
+                        href={ `/lessons/?lesson=${ data[i].URI }` }
+                        className='btn btn-primary'
+                        >
+                            Go somewhere
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    
+    return(
+        <div>
+            <h2>Уроци с "{ search }" в името:</h2>
+            <div className="row">{ html }</div>
+        </div>
+    );
 }

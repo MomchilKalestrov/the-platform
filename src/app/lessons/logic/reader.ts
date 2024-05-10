@@ -25,10 +25,11 @@ export function List(): Array<Listing> {
     .filter(lesson => lesson !== 'bad.lesson')
     .map(lesson => lesson.replace('.lesson', ''));
 
+    // Convert them into a Listings array.
     for(let i: number = 0; i < directories.length; ++i) {
         lessons.push({
             URI: directories[i],
-            title: directories[i].replaceAll('_', '')
+            title: directories[i].replaceAll('_', ' ')
         });
     }
 
