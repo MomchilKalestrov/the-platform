@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Listings } from "./reader";
+import type { Listing } from "./reader";
 
 export function RenderLesson(data: string): JSX.Element {
     let html: Array<JSX.Element> = [];
@@ -14,6 +14,17 @@ export function RenderLesson(data: string): JSX.Element {
             case 'paragraph':
                 html.push(<p key={ i }>{ data }</p>);
                 break;
+            case 'button':
+                html.push(
+                    <Link
+                    key={ i }
+                    className='btn btn-outline-dark'
+                    href={ data.split('<%%>')[1] }
+                    >
+                        { data.split('<%%>')[0] }
+                    </Link>
+                );
+                break;
             case 'code':
                 html.push(<code key={ i }>{ data }</code>);
                 break;
@@ -22,10 +33,10 @@ export function RenderLesson(data: string): JSX.Element {
     return <>{ html }</>;
 }
 
-export function RenderMenu(data: Listings): JSX.Element {
+export function RenderMenu(data: Array<Listing>): JSX.Element {
     let html: Array<JSX.Element> = [];
     
-    for(let i: number = 0; i < data.titles.length; ++i)
-        html.push(<Link key={ i } href={ `/lessons/?lesson=${ data.URIs[i] }` }>{ data.titles[i] }</Link>);
+    for(let i: number = 0; i < data.length; ++i)
+        html.push(<Link key={ i } href={ `/lessons/?lesson=${ data[i].URI }` }>{ data[i].title }</Link>);
     return <>{ html }</>;
 }

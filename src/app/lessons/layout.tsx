@@ -31,7 +31,7 @@ export default function RootLayout({
             <button id='menuCloseButton'>✖</button>
             { RenderMenu(List()) }
           </nav>
-          <main className='col' style={ { flexBasis: '50%' } }>
+          <main className='col'>
             <button id='menuButton' className={ `btn btn-outline-dark ${ styles.MobileView }` }>☰ More</button>
             { children }
           </main>
@@ -40,18 +40,18 @@ export default function RootLayout({
       <script dangerouslySetInnerHTML={{ __html: `
         document.getElementById('menuButton').addEventListener('click', function() {
             let menuListDesign = document.getElementById('menuList').style;
-            if(menuListDesign.display !== 'block')
-              menuListDesign.display = 'block';
+            if(menuListDesign.transform !== 'translateX(0%)')
+              menuListDesign.transform = 'translateX(0%)';
             else
-              menuListDesign.display = 'none';
+              menuListDesign.transform = 'translateX(-100%)';
         });
         document.getElementById('menuCloseButton').addEventListener('click', function() {
           let menuListDesign = document.getElementById('menuList').style;
-          menuListDesign.display = 'none';
+          menuListDesign.transform = 'translateX(-100%)';
         });
         window.addEventListener('resize', function() {
           let menuListDesign = document.getElementById('menuList').style;
-          menuListDesign.display = '';
+          menuListDesign.transform = '';
         });
       `}} />
     </>

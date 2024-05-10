@@ -1,8 +1,8 @@
 <%=title=%>
-What is the title
+    Възникна грешка.
 <%=paragraph=%>
-Some text
-<%=code=%>
-function Add(a, b) {
-    return a + b;
-}
+    Урокът, който се опитахте да достъпите не е наличен.
+<%=button=%>
+    Към началната страница
+    <%%>
+    /
