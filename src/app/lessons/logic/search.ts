@@ -1,4 +1,4 @@
-import { type Listing, List } from './reader'
+import { type Listing, List, Directory } from './reader'
 
 function similarity(a: string, b: string) {
     const matrix = [];
@@ -22,8 +22,15 @@ function similarity(a: string, b: string) {
   }
 
 export default function Search(query: string): Array<Listing> {
-    const lessons: Array<Listing> = List();
+    let lessons: Array<Listing> = [];
+    List().map(directory =>
+      lessons = lessons.concat(directory.lessons.map(lesson => ({
+        URI: `${ directory.URI }/${ lesson.URI }`,
+        title: lesson.title
+      }))));
 
+      console.log(lessons)
+    
     let results: Array<Listing> = Array.from(
         new Set(lessons
             .filter(lesson =>
