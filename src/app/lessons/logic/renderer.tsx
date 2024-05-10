@@ -40,10 +40,20 @@ export function RenderMenu(data: Array<Listing>): JSX.Element {
 export function RenderSearchResult(data: Array<Listing>, search: string): JSX.Element {
     let html: Array<JSX.Element> = [];
     
+    if(data.length <= 0) return(<h2>Няма намерени уроци</h2>);
+
     for(let i: number = 0; i < data.length; ++i)
         html.push(
-            <div key={ i } className="col-sm-6" style={ { width: 'min(100%, 15rem)', height: 'min-content' } }>
-                <div className="card">
+                <div
+                key={ i }
+                className="card"
+                style={ {
+                    width: 'min(100%, 15rem)',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    height: 'min-content'
+                } }
+                >
                     <div className="card-body" style={ { margin: '0px' } }>
                         <h5 className="card-title">{ data[i].title }</h5>
                         <Link
@@ -51,17 +61,16 @@ export function RenderSearchResult(data: Array<Listing>, search: string): JSX.El
                         href={ `/lessons/?lesson=${ data[i].URI }` }
                         className='btn btn-primary'
                         >
-                            Go somewhere
+                            Към урока
                         </Link>
                     </div>
                 </div>
-            </div>
         );
     
     return(
         <div>
             <h2>Уроци с "{ search }" в името:</h2>
-            <div className="row">{ html }</div>
+            <div className='w-100 m-0' style={ { height: 'min-content' } }>{ html }</div>
         </div>
     );
 }

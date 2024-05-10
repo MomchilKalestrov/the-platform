@@ -20,8 +20,8 @@ export default function RootLayout({
         <nav className='container navbar-expand-md px-0 px-md-3'>
           <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div className={ styles.SearchContainer }>
-            <input className={`form-control ${styles.SearchField}`} placeholder='...'/>
-            <button className={`btn btn-outline-light ${styles.SearchButton}`}>🔎︎</button>
+            <input id='searchField' className={`form-control ${styles.SearchField}`} placeholder='...'/>
+            <button id='searchButton' className={`btn btn-outline-light ${styles.SearchButton}`}>🔎︎</button>
           </div>
         </nav>
       </header>
@@ -48,6 +48,12 @@ export default function RootLayout({
         document.getElementById('menuCloseButton').addEventListener('click', function() {
           let menuListDesign = document.getElementById('menuList').style;
           menuListDesign.transform = 'translateX(-100%)';
+        });
+        document.getElementById('searchButton').addEventListener('click', function() {
+          let url = new URL(window.location.href);
+          url.searchParams.set('query', document.getElementById('searchField').value);
+          window.history.replaceState({}, '', url);
+          window.location.reload();
         });
         window.addEventListener('resize', function() {
           let menuListDesign = document.getElementById('menuList').style;
