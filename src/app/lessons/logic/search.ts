@@ -42,7 +42,7 @@ export default function Search(query: string): Array<Listing> {
                 similarity(
                     lesson.title.toLowerCase(),
                     query.toLowerCase()
-                ) >= 0.2
+                ) >= 0.5
     ))));
 
     return results;
