@@ -34,20 +34,17 @@ export default function Search(query: string): Array<Listing> {
     // First find if there are any lessons where the query is a substring.
     // Then find any lessons that are 50% or more similar to the query.
     // After all that, remove the duplicates.
-    let results: Array<Listing> = Array.from(
-        new Set(lessons
-            .filter(lesson =>
-                lesson.title
-                    .toLowerCase()
-                    .includes(query.toLowerCase())
-            )
-            .concat(lessons.filter(lesson =>
-                similarity(
-                    lesson.title.toLowerCase(),
-                    query.toLowerCase()
-                ) >= (process.env.QUERY_ACCURACY as unknown as number) 
-                // This is beyond fucking retarded, why don't you let me transpile without converting it to an unknown before a number
-    ))));
+    let results: Array<Listing> = Array.from(lessons
+      .filter(lesson =>
+          lesson.title
+            .toLowerCase()
+            .includes(query.toLowerCase())
+          ||
+          similarity(
+            lesson.title.toLowerCase(),                          // This is beyond fucking retarded, why
+            query.toLowerCase()                                  // don't you let me transpile without
+          ) >= (process.env.QUERY_ACCURACY as unknown as number) // converting it to an unknown before a number.
+      ));
 
     return results;
 }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CodeBlock from "@/app/components/code";
 import type { Directory, Listing } from "./reader";
 
 export function RenderLesson(data: string): JSX.Element {
@@ -8,9 +9,9 @@ export function RenderLesson(data: string): JSX.Element {
         let type: string = elements[i].split('=%>')[0].replace(' ', '\0') || 'N/A';
         let data: string = elements[i].split('=%>')[1] || 'N/A';
         switch(type) {
-            case 'title':     html.push(<h2 key={ i }>{ data }</h2>);     break;
-            case 'paragraph': html.push(<p key={ i }>{ data }</p>);       break;
-            case 'code':      html.push(<code key={ i }>{ data }</code>); break;
+            case 'title':     html.push(<h2 key={ i }>{ data }</h2>);               break;
+            case 'paragraph': html.push(<p key={ i }>{ data }</p>);                 break;
+            case 'code':      html.push(<CodeBlock key={ i }>{ data }</CodeBlock>); break;
             case 'button':
                 html.push(
                     <Link
@@ -37,7 +38,7 @@ export function RenderMenu(data: Array<Directory>): JSX.Element {
         for(let j: number = 0; j < data[i].lessons.length; ++j)
             lessons.push(
                 <Link
-                    key={ i }
+                    key={ j }
                     href={ `/lessons/?lesson=${ data[i].URI }/${ data[i].lessons[j].URI }` }
                     >
                         { data[i].lessons[j].title }
@@ -48,7 +49,8 @@ export function RenderMenu(data: Array<Directory>): JSX.Element {
             <>
                 <p>{ data[i].title }</p>
                 { lessons }
-            </>);
+            </>
+        );
     }
 
     return <>{ html }</>;
