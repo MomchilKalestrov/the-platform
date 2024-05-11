@@ -9,7 +9,7 @@
 }
 
 .CodeBlock textarea {
+    width: 100%;
     outline: none;
-    border: 2 solid var(--bs-card-border-color);
-    border-radius: 0 0 var(--bs-card-border-radius) var(--bs-card-border-radius);
+    height: 10rem;
 }

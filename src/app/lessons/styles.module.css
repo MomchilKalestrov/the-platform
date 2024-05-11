@@ -84,6 +84,7 @@
 
 @media (max-width: 575px) {
     .LessonsList {
+        z-index: 999;
         position: fixed;
         left: 0px;
         top: 0px;

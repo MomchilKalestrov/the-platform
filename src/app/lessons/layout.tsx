@@ -28,11 +28,11 @@ export default function RootLayout({
       <div className={ `container  ${ styles.ToBottom }` }>
         <div className='row'>
           <nav id='menuList' className={ `col ${styles.LessonsList}` }>
-            <button id='menuCloseButton'>✖</button>
+            <button id='menuCloseButton'>⨉</button>
             { RenderMenu(List()) }
           </nav>
           <main className='col'>
-            <button id='menuButton' className={ `btn btn-outline-dark ${ styles.MobileView }` }>☰ More</button>
+            <button id='menuButton' className={ `btn btn-outline-dark ${ styles.MobileView }` }>☰ Още</button>
             { children }
           </main>
         </div>
