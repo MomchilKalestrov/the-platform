@@ -1,5 +1,5 @@
 
-import Reader, { List, type Listing } from './logic/reader'
+import Reader, { type Listing } from './logic/reader'
 import { RenderLesson, RenderSearchResult } from './logic/renderer'
 import Search from './logic/search'
 

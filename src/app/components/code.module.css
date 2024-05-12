@@ -9,7 +9,21 @@
 }
 
 .CodeBlock textarea {
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1rem;
     width: 100%;
     outline: none;
-    height: 10rem;
+    height: 8rem;
+}
+
+.CodeBlock div div:first-of-type {
+    line-height: 1rem;
+    margin: var(--bs-card-spacer-y) 0;
+    max-height: 15rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.CodeBlock div div input {
+    font-family: 'Courier New', Courier, monospace;
 }

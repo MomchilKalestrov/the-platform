@@ -6,50 +6,79 @@ export default class CodeBlock extends Component<any, any> {
     static IdCounter: number = 0;
     Id: number;
     output: React.RefObject<HTMLDivElement>;
-    input: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
         this.Id     = CodeBlock.IdCounter++;
         this.output = React.createRef();
-        this.input  = React.createRef();
         this.state  = {
             code: this.props.children,
-            input: ''
+            input: 'N/A',
+            send: false
         }
-        this.ExecCode   = this.ExecCode.bind(this);
-        this.UpdateCode = this.UpdateCode.bind(this);
+        this.ExecCode    = this.ExecCode.bind(this);
+        this.UpdateCode  = this.UpdateCode.bind(this);
         this.UpdateInput = this.UpdateInput.bind(this);
     }
 
-    ExecCode() {
+    async ExecCode() {
         // Clear previous output
-        this.output.current.innerHTML = '';
-
+        this.output.current!.innerHTML = '';
+        this.output.current!.style.display = 'block';
+    
         // Override console.log to update the output element
         const originalConsoleLog = console.log;
-        console.log = (message: any) => this.output.current.innerHTML += `${message}<br>`;
-
-        function readInput() {
-            while(this.state.input === '');
-            return this.state.input;
+        console.log = (message: any) => {
+            this.output.current!.innerHTML += `${
+                typeof message === 'object' ||
+                Array.isArray(message)
+                ?
+                JSON.stringify(message)
+                :
+                message
+            }<br>`;
         }
+
+        const _write = (message: any) => this.output.current!.innerHTML += `${message}<br>`;
+
+        const _read = () => {
+            return new Promise((resolve) => {
+                const checkSend = () => {
+                    if (this.state.send) {
+                        _write(this.state.input);
+                        this.setState({ send: false });
+                        resolve(this.state.input);
+                    }
+                    else setTimeout(checkSend, 250);
+                }
+                checkSend();
+            });
+        }
+
+        const _memDmp = () => {
+            _write("Not implemented!");
+        }
+    
+        let code: Function = new Function('read, write, memDump', this.state.code);
 
         try {
-            const read = readInput.bind(this);
-            eval(this.state.code);
+            code(_read, _write, _memDmp); 
+        } catch (error) { 
+            console.error(error);  
         }
-        catch (error) { console.error(error);  }
-
+    
         // Restore the original console.log function
         console.log = originalConsoleLog;
     }
 
     UpdateCode = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
         this.setState({ code: event.target.value });
-
-    UpdateInput = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    
+    UpdateInput = (event: React.ChangeEvent<HTMLInputElement>) =>
         this.setState({ input: event.target.value });
+
+    UpdateSend = () =>
+        this.setState({ send: true });
 
     render =() => (
         <div className={ `card ${ style.CodeBlock }`}>
@@ -57,20 +86,21 @@ export default class CodeBlock extends Component<any, any> {
                 <button onClick={ this.ExecCode } className='btn btn-outline-success btn-sm'>▷</button>
             </div>
             <div className="card-body">
-                <textarea 
-                    value={this.state.codeValue} // Binding textarea value to state
-                    onChange={ this.UpdateCode } // Binding onChange event to handleCodeChange function
-                >
-                    { this.props.children }
-                </textarea>
-                <div ref={ this.output }></div>
-                <div className='d-flex mt-3'>
+                <textarea
+                    value={this.state.code }
+                    onChange={ this.UpdateCode }
+                ></textarea>
+                <div ref={ this.output } style={ { display: 'none' } }></div>
+                <div className='d-flex'>
                     <input
                         className='form-control'
-                        ref={ this.input }
                         onChange={ this.UpdateInput }
+                        placeholder='>_'
                     ></input>
-                    <button className='btn btn-outline-dark'>Send</button>
+                    <button
+                        className='btn btn-outline-dark'
+                        onClick={ this.UpdateSend }
+                    >Прати</button>
                 </div>
             </div>
         </div>
