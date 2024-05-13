@@ -8,6 +8,10 @@
     margin: 0px;
 }
 
+.CodeBlock a {
+    width: auto;
+}
+
 .CodeBlock textarea {
     outline: none;
     border: 1px solid var(--bs-border-color-translucent);

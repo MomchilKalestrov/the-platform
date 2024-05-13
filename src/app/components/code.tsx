@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import style from './code.module.css';
 import * as ts from "typescript";
+import { useRouter } from 'next/router'
+import Link from 'next/link';
 
 export default class CodeBlock extends Component<any, any> {
     static IdCounter: number = 0;
@@ -84,7 +86,7 @@ export default class CodeBlock extends Component<any, any> {
     render =() => (
         <div className={ `card ${ style.CodeBlock }`}>
             <div className="card-header">
-                <button onClick={ this.execCode } className='btn btn-outline-success btn-sm'>▷</button>
+                <button onClick={ this.execCode } className='btn btn-success btn-sm mr-3'>▷</button>
             </div>
             <div className="card-body">
                 <textarea
@@ -98,10 +100,10 @@ export default class CodeBlock extends Component<any, any> {
                         onChange={ this.updateInput }
                         placeholder='>_'
                     ></input>
-                    <button
+                    <button 
                         className='btn btn-outline-dark'
                         onClick={ this.updateSend }
-                    >Прати</button>
+                    >Въведи</button>
                 </div>
             </div>
         </div>
