@@ -12,6 +12,14 @@ export function RenderLesson(data: string): JSX.Element {
             case 'title':     html.push(<h2 key={ i }>{ data }</h2>);          break;
             case 'paragraph': html.push(<p key={ i }>{ data }</p>);            break;
             case 'code':      html.push(<CodeBlock key={ i } code={ data }/>); break;
+            case 'image':
+                html.push(
+                    <img
+                        src={ data.split('<%%>')[1] }
+                        alt={ data.split('<%%>')[0] }
+                    />
+                );
+                break;
             case 'button':
                 html.push(
                     <Link

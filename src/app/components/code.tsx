@@ -1,6 +1,7 @@
 'use client'
 import React, { Component } from 'react';
 import style from './code.module.css';
+import * as ts from "typescript";
 
 export default class CodeBlock extends Component<any, any> {
     static IdCounter: number = 0;
@@ -12,23 +13,25 @@ export default class CodeBlock extends Component<any, any> {
         this.Id     = CodeBlock.IdCounter++;
         this.output = React.createRef();
         this.state  = {
-            code: this.props.children,
+            code: this.props.code,
             input: 'N/A',
             send: false
         }
-        this.ExecCode    = this.ExecCode.bind(this);
-        this.UpdateCode  = this.UpdateCode.bind(this);
-        this.UpdateInput = this.UpdateInput.bind(this);
+        this.execCode    = this.execCode.bind(this);
+        this.updateCode  = this.updateCode.bind(this);
+        this.updateInput = this.updateInput.bind(this);
     }
 
-    async ExecCode() {
+    async execCode() {
         // Clear previous output
         this.output.current!.innerHTML = '';
         this.output.current!.style.display = 'block';
     
         // Override console.log to update the output element
         const originalConsoleLog = console.log;
-        console.log = (message: any) => {
+        console.log = (message: any) => _write(message);
+
+        const _write = (message: any) => {
             this.output.current!.innerHTML += `${
                 typeof message === 'object' ||
                 Array.isArray(message)
@@ -38,8 +41,6 @@ export default class CodeBlock extends Component<any, any> {
                 message
             }<br>`;
         }
-
-        const _write = (message: any) => this.output.current!.innerHTML += `${message}<br>`;
 
         const _read = () => {
             return new Promise((resolve) => {
@@ -57,9 +58,9 @@ export default class CodeBlock extends Component<any, any> {
 
         const _memDmp = () => {
             _write("Not implemented!");
-        }
+        }        
     
-        let code: Function = new Function('read, write, memDump', this.state.code);
+        let code: Function = new Function('read, write, memDump', ts.transpile(this.state.code));
 
         try {
             code(_read, _write, _memDmp); 
@@ -71,35 +72,35 @@ export default class CodeBlock extends Component<any, any> {
         console.log = originalConsoleLog;
     }
 
-    UpdateCode = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+    updateCode = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
         this.setState({ code: event.target.value });
     
-    UpdateInput = (event: React.ChangeEvent<HTMLInputElement>) =>
+    updateInput = (event: React.ChangeEvent<HTMLInputElement>) =>
         this.setState({ input: event.target.value });
 
-    UpdateSend = () =>
+    updateSend = () =>
         this.setState({ send: true });
 
     render =() => (
         <div className={ `card ${ style.CodeBlock }`}>
             <div className="card-header">
-                <button onClick={ this.ExecCode } className='btn btn-outline-success btn-sm'>▷</button>
+                <button onClick={ this.execCode } className='btn btn-outline-success btn-sm'>▷</button>
             </div>
             <div className="card-body">
                 <textarea
                     value={this.state.code }
-                    onChange={ this.UpdateCode }
+                    onChange={ this.updateCode }
                 ></textarea>
                 <div ref={ this.output } style={ { display: 'none' } }></div>
-                <div className='d-flex'>
+                <div className='d-flex mt-3'>
                     <input
                         className='form-control'
-                        onChange={ this.UpdateInput }
+                        onChange={ this.updateInput }
                         placeholder='>_'
                     ></input>
                     <button
                         className='btn btn-outline-dark'
-                        onClick={ this.UpdateSend }
+                        onClick={ this.updateSend }
                     >Прати</button>
                 </div>
             </div>

@@ -27,7 +27,9 @@ export function List(): Array<Directory> {
     // Get the available lessons.
     let directories: Array<string> = fs
         .readdirSync(process.env.LESSONS_URL as string)
-        .filter(lesson => lesson !== 'bad.lesson');
+        .filter(lesson =>
+            lesson !== 'bad.lesson'
+        );
 
     // Convert them into a Listings array.
     for(let i: number = 0; i < directories.length; ++i)

@@ -5,5 +5,16 @@ This is a paragraph
 <%=button=%>
 button<%%>/
 <%=code=%>
-let a = 0;
-memDump();
+console.log("TEST");
+<%=image=%>
+Tiger
+<%%>
+/media/tiger.jpeg
+<%=image=%>
+Tiger
+<%%>
+/media/tiger.jpeg
+<%=code=%>
+console.log("TEST");
+<%=code=%>
+console.log("TEST");

@@ -42,6 +42,11 @@ main a {
     width: min(100%, 15rem);
 }
 
+main img {
+    margin-left: calc(50% - min(50%, 12.5rem));
+    width: min(100%, 25rem);
+}
+
 @media (max-width: 1200px) {
     main {
         flex-grow: 4 !important;

@@ -9,11 +9,21 @@
 }
 
 .CodeBlock textarea {
+    outline: none;
+    border: 1px solid var(--bs-border-color-translucent);
+    border-radius: var(--bs-card-border-radius);
     font-family: 'Courier New', Courier, monospace;
     line-height: 1rem;
+    padding: calc(var(--bs-card-border-radius) / 2);
     width: 100%;
-    outline: none;
     height: 8rem;
+    overflow-x: scroll;
+    overflow-wrap: normal;
+}
+
+.CodeBlock textarea + div {
+    line-height: 1rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .CodeBlock div div:first-of-type {
