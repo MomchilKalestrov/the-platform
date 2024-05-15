@@ -1,0 +1,20 @@
+<%=title=%>
+This is a title
+<%=paragraph=%>
+This is a paragraph
+<%=button=%>
+button<%%>/
+<%=code=%>
+console.log("TEST");
+<%=image=%>
+Tiger
+<%%>
+/media/tiger.jpeg
+<%=image=%>
+Tiger
+<%%>
+/media/tiger.jpeg
+<%=code=%>
+console.log("TEST");
+<%=code=%>
+console.log("TEST");
