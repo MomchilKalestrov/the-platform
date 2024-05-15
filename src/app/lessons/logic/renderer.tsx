@@ -3,10 +3,16 @@ import CodeBlock from "@/app/components/code";
 import ListSection from "@/app/components/listSection";
 
 export function RenderLesson(data: string): React.JSX.Element {
+    // I'm an idiot. Instead of using static HTML or even just something like EJS,
+    // I'm going to use a custom format I made up.
     let html: Array<React.JSX.Element> = [];
     let elements: Array<string> = data.split('<%=');
     for(let i: number = 0; i < elements.length; ++i) {
+        // Type is for the type of the element
         let type: string = elements[i].split('=%>')[0].replace(' ', '\0') || 'N/A';
+        // The data is for what is in the actual element
+        // Wow, it's like the fucking variables point to
+        // their use in the code!
         let data: string = elements[i].split('=%>')[1] || 'N/A';
         switch(type) {
             case 'title':     html.push(<h2 key={ i }>{ data }</h2>);          break;
@@ -23,9 +29,9 @@ export function RenderLesson(data: string): React.JSX.Element {
             case 'button':
                 html.push(
                     <Link
-                    key={ i }
-                    className='btn btn-outline-dark'
-                    href={ data.split('<%%>')[1] }
+                        key={ i }
+                        className='btn btn-outline-dark'
+                        href={ data.split('<%%>')[1] }
                     >
                         { data.split('<%%>')[0] }
                     </Link>
@@ -43,55 +49,21 @@ export function RenderMenu(data: JSON): JSX.Element {
 
     for(let i: number = 0; i < keys.length; ++i) {
         let list: Array<React.JSX.Element> = [];
+        let indexCounter = 0;
+        // We get all the lessons in an array
         data[keys[i]].forEach((lesson: string) => 
             list.push(
                 <Link
+                    key={ indexCounter++ }
                     href={ `/lessons/?lesson=${ keys[i].toLowerCase().replaceAll(' ', '_') }/${ lesson.toLowerCase().replaceAll(' ', '_') }` }
                 >
                     { lesson }
                 </Link>
             )
         );
-
-        html.push(<ListSection title={ keys[i] }>{ list }</ListSection>);
+        // We push the lessons array to the appropiate ListSection
+        html.push(<ListSection title={ keys[i] } key={ i }>{ list }</ListSection>);
     }
+
     return <>{ html }</>;
-}
-
-export function RenderSearchResult(data: JSON, search: string): React.JSX.Element {
-    /*let html: Array<JSX.Element> = [];
-    
-    if(data.length <= 0) return(<h2>Няма намерени уроци</h2>);
-
-    for(let i: number = 0; i < data.length; ++i)
-        html.push(
-                <div
-                key={ i }
-                className="card"
-                style={ {
-                    width: 'min(100%, 15rem)',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    height: 'min-content'
-                } }
-                >
-                    <div className="card-body" style={ { margin: '0px' } }>
-                        <h5 className="card-title">{ data[i].title }</h5>
-                        <Link
-                        style={ { width: '100%', margin: '0px', transform: 'translateX(0%)' } }
-                        href={ `/lessons/?lesson=${ data[i].URI }` }
-                        className='btn btn-primary'
-                        >
-                            Към урока
-                        </Link>
-                    </div>
-                </div>
-        );*/
-    
-    return(
-        <div>
-            <h2>Уроци с "{ search }" в името:</h2>
-            <div className='w-100 m-0' style={ { height: 'min-content' } }>{ JSON.stringify(data) }</div>
-        </div>
-    );
 }

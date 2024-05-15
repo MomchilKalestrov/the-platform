@@ -1,4 +1,9 @@
 /* Good luck understanding ANY of these selectors. I REALLY mean it. */
+.SearchResult {
+    padding: 0px;
+    margin: 0px;
+}
+
 .NavTitle {
     aspect-ratio: 126 / 17;
     height: 2.6rem;
@@ -9,6 +14,10 @@
 
 .ToBottom {
     min-height: calc(100% - 3.6rem);
+}
+
+.ToBottom > * {
+    height: 100%;
 }
 
 .SearchContainer {

@@ -1,6 +1,6 @@
 
 import Reader from './logic/reader'
-import { RenderLesson, RenderSearchResult } from './logic/renderer'
+import { RenderLesson } from './logic/renderer'
 import RenderSearch from './logic/search'
 
 // Anything before the return is server sided
