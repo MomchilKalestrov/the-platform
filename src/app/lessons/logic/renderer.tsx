@@ -1,9 +1,8 @@
 import Link from "next/link";
 import CodeBlock from "@/app/components/code";
-import type { Directory, Listing } from "./reader";
 
-export function RenderLesson(data: string): JSX.Element {
-    let html: Array<JSX.Element> = [];
+export function RenderLesson(data: string): React.JSX.Element {
+    let html: Array<React.JSX.Element> = [];
     let elements: Array<string> = data.split('<%=');
     for(let i: number = 0; i < elements.length; ++i) {
         let type: string = elements[i].split('=%>')[0].replace(' ', '\0') || 'N/A';
@@ -37,35 +36,29 @@ export function RenderLesson(data: string): JSX.Element {
     return <>{ html }</>;
 }
 
-export function RenderMenu(data: Array<Directory>): JSX.Element {
-    let html: Array<JSX.Element> = [];
-    
+export function RenderMenu(data: JSON): JSX.Element {
+    let html: Array<React.JSX.Element> = [];
+    let keys: Array<string> = Object.keys(data);
+    let indexCount: number = 0;
 
-    for(let i: number = 0; i < data.length; ++i) {
-        let lessons: Array<JSX.Element> = [];
-        for(let j: number = 0; j < data[i].lessons.length; ++j)
-            lessons.push(
+    for(let i: number = 0; i < keys.length; ++i) {
+        html.push(<p key={ indexCount++ }>{ keys[i] }</p>);
+        data[keys[i]].forEach((lesson: string) => 
+            html.push(
                 <Link
-                    key={ j }
-                    href={ `/lessons/?lesson=${ data[i].URI }/${ data[i].lessons[j].URI }` }
-                    >
-                        { data[i].lessons[j].title }
+                    key={ indexCount++ }
+                    href={ `/lessons/?lesson=${ keys[i].toLowerCase().replaceAll(' ', '_') }/${ lesson.toLowerCase().replaceAll(' ', '_') }` }
+                >
+                    { lesson }
                 </Link>
-            );
-        
-        html.push(
-            <>
-                <p>{ data[i].title }</p>
-                { lessons }
-            </>
+            )
         );
     }
-
     return <>{ html }</>;
 }
 
-export function RenderSearchResult(data: Array<Listing>, search: string): JSX.Element {
-    let html: Array<JSX.Element> = [];
+export function RenderSearchResult(data: JSON, search: string): React.JSX.Element {
+    /*let html: Array<JSX.Element> = [];
     
     if(data.length <= 0) return(<h2>Няма намерени уроци</h2>);
 
@@ -92,12 +85,12 @@ export function RenderSearchResult(data: Array<Listing>, search: string): JSX.El
                         </Link>
                     </div>
                 </div>
-        );
+        );*/
     
     return(
         <div>
             <h2>Уроци с "{ search }" в името:</h2>
-            <div className='w-100 m-0' style={ { height: 'min-content' } }>{ html }</div>
+            <div className='w-100 m-0' style={ { height: 'min-content' } }>{ JSON.stringify(data) }</div>
         </div>
     );
 }
