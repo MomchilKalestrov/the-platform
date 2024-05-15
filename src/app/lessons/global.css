@@ -1,5 +1,6 @@
 :root {
     font-size: clamp(0.75rem, 5vw, 1.25rem);
+    --header-height: 3.6rem;
 }
 
 *::-webkit-scrollbar {
@@ -20,6 +21,7 @@ body {
 }
 
 header {
+    height: var(--header-height);
     width: 100vw;
     background-color: #212529;
 }
@@ -31,6 +33,8 @@ main {
     background-color: #f8f9fa;
     border-left: 2px solid #DEE2E6;
     border-right: 2px solid #DEE2E6;
+    overflow-y: scroll;
+    max-height: calc(100vh - var(--header-height));
 }
 
 main * {
@@ -65,8 +69,8 @@ main img {
 }
 
 @media (max-width: 768px) {
-    header {
-        height: 6rem;
+    :root {
+        --header-height: 6rem;
     }
 
     main {

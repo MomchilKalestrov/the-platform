@@ -1,13 +1,18 @@
 {
-    "Section One": [
+    "Увод в програмирането": [
+        "Увод в програмната платформа",
+        "Величини и операции",
+        "Условни конструкции",
+        "Циклични конструкции",
+        "Методи",
+        "Логически изрази"
+    ],
+    "Section": [
         "Another",
         "AnotherOne",
         "Rename",
         "Second",
-        "This Is A TeST"
-    ],
-    "Section": [
-        "Another",
+        "This Is A TeST",
         "AnotherOne",
         "Rename",
         "Second",
