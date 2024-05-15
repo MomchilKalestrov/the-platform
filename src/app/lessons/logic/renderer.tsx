@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CodeBlock from "@/app/components/code";
+import ListSection from "@/app/components/listSection";
 
 export function RenderLesson(data: string): React.JSX.Element {
     let html: Array<React.JSX.Element> = [];
@@ -39,20 +40,20 @@ export function RenderLesson(data: string): React.JSX.Element {
 export function RenderMenu(data: JSON): JSX.Element {
     let html: Array<React.JSX.Element> = [];
     let keys: Array<string> = Object.keys(data);
-    let indexCount: number = 0;
 
     for(let i: number = 0; i < keys.length; ++i) {
-        html.push(<p key={ indexCount++ }>{ keys[i] }</p>);
+        let list: Array<React.JSX.Element> = [];
         data[keys[i]].forEach((lesson: string) => 
-            html.push(
+            list.push(
                 <Link
-                    key={ indexCount++ }
                     href={ `/lessons/?lesson=${ keys[i].toLowerCase().replaceAll(' ', '_') }/${ lesson.toLowerCase().replaceAll(' ', '_') }` }
                 >
                     { lesson }
                 </Link>
             )
         );
+
+        html.push(<ListSection title={ keys[i] }>{ list }</ListSection>);
     }
     return <>{ html }</>;
 }
