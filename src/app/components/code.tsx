@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import style from './code.module.css';
 import * as ts from "typescript";
-import { useRouter } from 'next/router'
-import Link from 'next/link';
 
 export default class CodeBlock extends Component<any, any> {
     static IdCounter: number = 0;
