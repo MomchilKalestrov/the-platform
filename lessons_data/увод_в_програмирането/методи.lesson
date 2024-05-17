@@ -1,12 +1,18 @@
 <%=title=%>
-Another one
-<%=paragraph=%>
-This is a paragraph
-<%=button=%>
-button
-<%%>
-/
+Clusterfucked testing page for bullshit idiot code
 <%=code=%>
-function Add(a, b) {
-    return a + b;
+var a = 10;
+var b = 'hello';
+var c = {
+    namespace: {
+        no: "test",
+        yes: "truth",
+        arr: [1, 2, 3]
+    }
+};
+
+function test() {
+    var d = 'inside function';
 }
+
+dump();

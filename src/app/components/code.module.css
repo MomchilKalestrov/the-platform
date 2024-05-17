@@ -2,13 +2,25 @@
     margin-left: calc(50% - min(50%, 20rem));
     width: min(100%, 40rem);
     height: min-content !important;
+    display: grid;
+    grid-template-areas: 
+        "block stack"
+        "block heap";
+    grid-template-rows: 50% 50%;
+    grid-template-columns: auto calc(2rem + 25%);
+    gap: 1rem;
+    overflow: hidden;
+}
+
+.CodeBlock > div:first-child {
+    grid-area: block;
 }
 
 .CodeBlock * {
     margin: 0px;
 }
 
-.CodeBlock a {
+.CodeBlock div a {
     width: auto;
 }
 
@@ -25,19 +37,36 @@
     overflow-wrap: normal;
 }
 
-.CodeBlock textarea + div {
-    line-height: 1rem;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-.CodeBlock div div:first-of-type {
+.OutputBlock {
     line-height: 1rem;
     margin: var(--bs-card-spacer-y) 0;
     max-height: 15rem;
     overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-x: scroll;
 }
 
-.CodeBlock div div input {
+.CodeBlock input {
     font-family: 'Courier New', Courier, monospace;
+}
+
+.StackContainer {
+    grid-area: stack;
+    overflow: scroll;
+}
+
+.HeapContainer {
+    grid-area: heap;
+    overflow: scroll;
+}
+
+@media (max-width: 768px) {
+    .CodeBlock {
+        grid-template-areas: 
+            "block block"
+            "block block";
+    }
+
+    .CodeBlock table {
+        display: none;
+    }
 }
