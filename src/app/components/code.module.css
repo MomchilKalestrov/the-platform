@@ -8,7 +8,7 @@
         "block heap";
     grid-template-rows: 50% 50%;
     grid-template-columns: auto calc(2rem + 25%);
-    gap: 1rem;
+    gap: 0.5rem;
     overflow: hidden;
 }
 
@@ -33,16 +33,10 @@
     padding: calc(var(--bs-card-border-radius) / 2);
     width: 100%;
     height: 8rem;
-    overflow-x: scroll;
-    overflow-wrap: normal;
-}
-
-.OutputBlock {
-    line-height: 1rem;
-    margin: var(--bs-card-spacer-y) 0;
     max-height: 15rem;
-    overflow-y: scroll;
     overflow-x: scroll;
+    overflow-y: scroll;
+    overflow-wrap: normal;
 }
 
 .CodeBlock input {
@@ -51,12 +45,27 @@
 
 .StackContainer {
     grid-area: stack;
-    overflow: scroll;
+    align-self: start;
 }
 
 .HeapContainer {
     grid-area: heap;
+    align-self: end;
+}
+
+.StackContainer, .HeapContainer {
+    font-family: 'Courier New', Courier, monospace;
     overflow: scroll;
+    max-height: 12rem;
+    text-align: left;
+}
+
+.Variable {
+    display: flex;
+}
+
+.Variable div {
+    width: 50%;
 }
 
 @media (max-width: 768px) {
@@ -66,7 +75,7 @@
             "block block";
     }
 
-    .CodeBlock table {
+    .StackContainer, .HeapContainer {
         display: none;
     }
 }
