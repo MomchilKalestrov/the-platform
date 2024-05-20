@@ -9,12 +9,11 @@ export default class CodeBlock extends Component<any, any> {
     private _stack:   React.RefObject<HTMLDivElement>;
     private _heap:   React.RefObject<HTMLDivElement>;
     private _sandbox: any;
-    private _colorCounter = 0;
     private static readonly _colors: Array<string> = [
-        'background-color: #d3eaf3; color: #051c2d;',
-        'background-color: #fddedf; color: #42090a;',
-        'background-color: #f5f2d6; color: #42090a;',
-        'background-color: #d9f9d9; color: #082301;',
+        'background-color: #f0fcff; color: #051c2d;',
+        'background-color: #fff1f2; color: #42090a;',
+        'background-color: #fffeec; color: #42090a;',
+        'background-color: #f2fff2; color: #082301;',
     ];
 
     constructor(props: any) {
@@ -28,11 +27,14 @@ export default class CodeBlock extends Component<any, any> {
             send:  false,
             color: 0
         }
+        // Sandbox functions
         this._write      = this._write.bind(this);
         this._read       = this._read.bind(this);
-        this._dump       = this._dump.bind(this);
+        // Sandbox debugger functions
+        this._memDump    = this._memDump.bind(this);
         this._parseType  = this._parseType.bind(this);
-
+        this._memTracker = this._memTracker.bind(this);
+        // Code block functions
         this.execCode    = this.execCode.bind(this);
         this.updateCode  = this.updateCode.bind(this);
         this.updateInput = this.updateInput.bind(this);
@@ -58,14 +60,12 @@ export default class CodeBlock extends Component<any, any> {
         });
 
     private _parseType = (variable: any) => {
-        if (
-            typeof variable !== 'object' &&
-            typeof variable !== 'function'
-        )
+        if (typeof variable !== 'object')   // When It's a primitive object.
             return variable;
-        else if (
-            variable.class === 'Array'
-        ) {
+        // The VM returns everything other than primitives as,
+        // objects,  so we  have to  check the  class property
+        // to   get   the   true   type   of   the   variable.
+        else if (variable.class === 'Array') {
             let array = [];
             let counter: number = 0;
             let length: number = Object.keys(variable.properties).length;
@@ -73,25 +73,23 @@ export default class CodeBlock extends Component<any, any> {
                 array.push(variable.properties[counter++]);
             return array;
         }
-        else if (
-            variable.class === 'Function'
-        ) {
-            return "!FUNCTION!";
-        }
-        else if (
-            typeof variable === 'object'
-        ) {
+        else if (variable.class === 'Function')
+            return "!FUNCTION!";    // IDK what  else  to   return,  we  won't
+                                    // render   the   actual  function   logic
+                                    // because it will take up too much space.
+        else { // Everything else is just an object
+            
             let obj: any = {};
             for (const property in variable.properties)
+                // It  might  have other  objects,  so
+                // instead of having a fuckton of for,
+                // loops,     we    use     recursion.
                 obj[property] = this._parseType(variable.properties[property]);
             return obj;
         }
     }
 
-    // Dump sounds like the code is taking a crap or sth
-    // Heheh, poo funi
-    // I'm going fucking insane.
-    private _dump = () => {
+    private _memDump = () => {
         // Get the properties
         const properties: any = this._sandbox.globalObject.properties;
         // This is where we'll store the actual variables that should be.
@@ -109,18 +107,19 @@ export default class CodeBlock extends Component<any, any> {
             'unescape', 'window'
         ];
 
-        // Add the variables to the array.
+        // Removing the  VM properties from  the array.
+        // Basically adding the variables to the array.
         for (const property in properties)
             if (!hiddenProperties.includes(property))
                 variables[property] = this._parseType(properties[property]);
 
         this._renderMemDump(variables);
-        this._write('Memory dumped.');
     }
 
     private _renderMemDump = (
         variables: any
     ) => {
+        let colorCounter: number = 0;
 
         // Make arrays take only one line.
         const stylizeJSON = (json: string): string => {
@@ -143,17 +142,17 @@ export default class CodeBlock extends Component<any, any> {
                 Array.isArray(variables[variable])
             ) {
                 // If it's an object, place the object reference
-                // to the stack and the instance to the heap.
+                // to  the stack and the  instance to the  heap.
                 this._stack.current!.innerHTML +=
                     `<div class=\"${ style.Variable }\">
-                        <div style=\"${ CodeBlock._colors[this._colorCounter & 0b11] }\">${ variable }:</div>
-                        <div style=\"${ CodeBlock._colors[this._colorCounter & 0b11] }\">Обект</div>
+                        <div style=\"${ CodeBlock._colors[colorCounter & 0b11] }\">${ variable }:</div>
+                        <div style=\"${ CodeBlock._colors[colorCounter & 0b11] }\">Обект</div>
                     </div>`;
                 this._heap.current!.innerHTML  +=
                     `<div>
-                        <pre style=\"${ CodeBlock._colors[this._colorCounter & 0b11] }\">${ stylizeJSON(JSON.stringify(variables[variable], undefined, 2)) }</pre>
+                        <pre style=\"${ CodeBlock._colors[colorCounter & 0b11] }\">${ stylizeJSON(JSON.stringify(variables[variable], undefined, 2)) }</pre>
                     </div>`;
-                this._colorCounter++;
+                    colorCounter++;
             }
             else if(variables[variable] === '!FUNCTION!')  // Just point out it's a function.
                 this._stack.current!.innerHTML +=
@@ -169,23 +168,31 @@ export default class CodeBlock extends Component<any, any> {
                         <div>${ typeof variables[variable] === 'string' ? `\"${ variables[variable] }\"` : variables[variable] }</div>
                     </div>`;
         }
-
-        this._colorCounter = this._colorCounter & 0b111;
     }
 
-    async execCode() {
+    private _memTracker = () => {
+        console.log('Tracker initialized');
+        return new Promise(resolve => {
+            const dump = () => {
+                this._memDump();
+                setTimeout(dump, 100);
+            }
+            dump();
+        })
+    }
+
+    private execCode = () => {
         // Clear previous output, if there's any.
         this._output.current!.innerHTML = '';
         this._output.current!.style.display = 'block';
-
         // Initialize the sandbox.
-        this._sandbox = new jsInterpreter(ts.transpile(this.state.code), (interpreter: any, globalObject: any) => {
+        this._sandbox = new jsInterpreter(ts.transpile(this.state.code), (interpreter: any, globalObject: any) => {            
             interpreter.setProperty(globalObject, 'write', interpreter.createNativeFunction(this._write));
             interpreter.setProperty(globalObject, 'read',  interpreter.createNativeFunction(this._read));
-            interpreter.setProperty(globalObject, 'dump',  interpreter.createNativeFunction(this._dump));
         });
-
-
+        // And memory tracker.
+        this._memTracker();
+        // Run the sandbox/ VM.
         try       { this._sandbox.run(); }
         catch (e) { console.error(e);    }
     }   
@@ -207,7 +214,7 @@ export default class CodeBlock extends Component<any, any> {
                 </div>
                 <div className='card-body'>
                     <textarea
-                        value={this.state.code }
+                        value={ this.state.code }
                         onChange={ this.updateCode }
                     ></textarea>
                     <textarea
@@ -216,6 +223,7 @@ export default class CodeBlock extends Component<any, any> {
                         style={ { display: 'none' } }
                         readOnly
                     ></textarea>
+                    {/*
                     <div className='d-flex mt-3'>
                         <input
                             className='form-control'
@@ -227,6 +235,7 @@ export default class CodeBlock extends Component<any, any> {
                             onClick={ this.updateSend }
                         >Въведи</button>
                     </div>
+                    */}
                 </div>
             </div>
             <div
