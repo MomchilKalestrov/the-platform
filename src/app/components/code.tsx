@@ -5,10 +5,11 @@ const ts = require('typescript');
 const jsInterpreter = require('js-interpreter');
 
 export default class CodeBlock extends Component<any, any> {
-    private _output:  React.RefObject<HTMLTextAreaElement>;
-    private _stack:   React.RefObject<HTMLDivElement>;
-    private _heap:   React.RefObject<HTMLDivElement>;
-    private _sandbox: any;
+   private _output:     React.RefObject<HTMLTextAreaElement> = React.createRef();
+    private _stack:     React.RefObject<HTMLDivElement>      = React.createRef();
+    private _heap:      React.RefObject<HTMLDivElement>      = React.createRef();
+    private _sandbox:   any;
+    private _isMounted: boolean                              = false;
     private static readonly _colors: Array<string> = [
         'background-color: #f0fcff; color: #051c2d;',
         'background-color: #fff1f2; color: #42090a;',
@@ -18,9 +19,6 @@ export default class CodeBlock extends Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        this._output = React.createRef();
-        this._stack  = React.createRef();
-        this._heap   = React.createRef();
         this.state   = {
             code:  this.props.code.trim(),
             input: 'N/A',
@@ -38,6 +36,15 @@ export default class CodeBlock extends Component<any, any> {
         this.execCode    = this.execCode.bind(this);
         this.updateCode  = this.updateCode.bind(this);
         this.updateInput = this.updateInput.bind(this);
+    }
+    // Component specific functions
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        console.log('Unmounting');
+        this._isMounted = false;
     }
 
     private _write = (message: any) => {
@@ -132,6 +139,8 @@ export default class CodeBlock extends Component<any, any> {
         }
 
         // Set the card header.
+        if(!this._isMounted) return;
+
         this._stack.current!.innerHTML = '<div class="card-header">Стек</div>';
         this._heap.current!.innerHTML  = '<div class="card-header">Хийп</div>';
 
@@ -175,9 +184,11 @@ export default class CodeBlock extends Component<any, any> {
         return new Promise(resolve => {
             const dump = () => {
                 this._memDump();
-                setTimeout(dump, 100);
+		        if (this._isMounted)
+                	setTimeout(dump, 100);
             }
             dump();
+            console.log('Tracker unloaded');
         })
     }
 
@@ -195,6 +206,7 @@ export default class CodeBlock extends Component<any, any> {
         // Run the sandbox/ VM.
         try       { this._sandbox.run(); }
         catch (e) { console.error(e);    }
+
     }   
 
     updateCode = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
