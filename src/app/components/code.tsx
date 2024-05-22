@@ -1,5 +1,5 @@
 'use client'
-import React, { CSSProperties, Component } from 'react';
+import React, { Component } from 'react';
 import style from './code.module.css';
 const ts = require('typescript');
 const jsInterpreter = require('js-interpreter');
@@ -66,7 +66,7 @@ export default class CodeBlock extends Component<any, any> {
             checkSend();
         });
 
-    private _parseType = (variable: any) => {
+    private _parseType = (variable: any): any => {
         if (typeof variable !== 'object')   // When It's a primitive object.
             return variable;
         // The VM returns everything other than primitives as,
@@ -85,7 +85,6 @@ export default class CodeBlock extends Component<any, any> {
                                     // render   the   actual  function   logic
                                     // because it will take up too much space.
         else { // Everything else is just an object
-            
             let obj: any = {};
             for (const property in variable.properties)
                 // It  might  have other  objects,  so
@@ -188,8 +187,7 @@ export default class CodeBlock extends Component<any, any> {
                 	setTimeout(dump, 100);
             }
             dump();
-            console.log('Tracker unloaded');
-        })
+        });
     }
 
     private execCode = () => {
@@ -206,7 +204,6 @@ export default class CodeBlock extends Component<any, any> {
         // Run the sandbox/ VM.
         try       { this._sandbox.run(); }
         catch (e) { console.error(e);    }
-
     }   
 
     updateCode = (event: React.ChangeEvent<HTMLTextAreaElement>) =>

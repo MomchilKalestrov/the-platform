@@ -1,0 +1,22 @@
+.Output {
+    grid-area: output;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Stack {
+    grid-area: stack;
+}
+
+.Heap {
+    grid-area: heap;
+}
+
+.Variable {
+    display: flex;
+}
+
+.Variable div {
+    width: 50%;
+}

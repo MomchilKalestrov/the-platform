@@ -10,12 +10,13 @@ export default function Page({
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   // We get the lesson/ query from the URL parameter
-  let lesson: string = Reader(searchParams.lesson as string);
+  let lesson: string = searchParams.lesson ? Reader(searchParams.lesson as string) : Reader('welcome');
   let query: string = searchParams.query as string;
 
   // Even IF there is a lesson, the search is more important,
   // so the query will always have to be undefined.
-  if(query === undefined) return RenderLesson(lesson);
+  if(!query)
+    return RenderLesson(lesson);
 
   // Start the actual search
   // and return the rendered version
