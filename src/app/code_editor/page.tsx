@@ -55,15 +55,12 @@ export default function Page({
               });
         }
 
-        // Set the card header.
         if(!isMounted) return;
+        stack.current!.innerHTML = '';
+        heap.current!.innerHTML = '';
 
-        stack.current!.innerHTML = '<div class="card-header">Стек</div>';
-        heap.current!.innerHTML  = '<div class="card-header">Хийп</div>';
-
-        console.log(variables);
         // Print out the variables.
-        for (const variable in variables) {
+        for (const variable in variables)
             if (
                 typeof variables[variable] === 'object' ||
                 Array.isArray(variables[variable])
@@ -95,7 +92,6 @@ export default function Page({
                         <div>${ typeof variables[variable] === 'string' ? `\"${ variables[variable] }\"` : variables[variable] }</div>
                     </div>`;
         }
-    }
 
     const parseType = (variable: any): any => {
         if (typeof variable !== 'object')   // When It's a primitive object.
@@ -172,6 +168,9 @@ export default function Page({
         sandbox = new jsInterpreter(ts.transpile(code.current!.value), (interpreter: any, globalObject: any) => {            
             interpreter.setProperty(globalObject, 'write', interpreter.createNativeFunction(write));
         });
+        console.log(output.current!);
+        console.log(stack.current!);
+        console.log(heap.current!);
         // Attach the memory tracker
         memTracker();
         // Run the sandbox/ VM.
@@ -181,24 +180,26 @@ export default function Page({
 
     return(
         <body className={ roboto.className }>
-            <main>
-                <nav>
+            <main className='card'>
+                <nav className='card-header'>
                     <button className='btn btn-success' onClick={ ExecCode }>▷</button>
                 </nav>
-                <textarea ref={ code }>
-
+                <textarea ref={ code } className='card-body'>
+                    // Code
                 </textarea>
             </main>
-            <div className={ styles.Output }>
-                <textarea ref={ output } readOnly>
-
+            <div className={ styles.Output + ' card'}>
+                <div className='card-header'>Изход</div>
+                <textarea ref={ output } className='card-body' readOnly>
                 </textarea>
             </div>
-            <div className={ styles.Stack } ref={ stack }>
-
+            <div className={ styles.Stack + ' card'}>
+                <div className='card-header'>Стек</div>
+                <div ref={ stack }></div>
             </div>
-            <div className={ styles.Heap } ref={ heap }>
-
+            <div className={ styles.Heap + ' card'}>
+                <div className='card-header'>Хийп</div>
+                <div ref={ heap }></div>
             </div>
         </body>
     );

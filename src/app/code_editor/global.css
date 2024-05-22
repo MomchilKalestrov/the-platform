@@ -16,23 +16,10 @@ body {
 
 body > * {
     overflow: scroll;
-    background-color: white;
 }
 
 main {
     grid-area: edit;
-    display: grid;
-    grid-template-rows: 2.5rem;
-    grid-template-columns: 100%;
-    grid-template-areas: 
-    'nav   '
-    'editor';
-    align-items: center;
-    gap: 0.5rem;
-}
-
-main nav {
-    grid-area: nav;
 }
 
 main textarea {
@@ -49,4 +36,25 @@ textarea {
     outline: none;
     line-height: 1rem;
     font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    body {
+        grid-template-areas:
+        'edit output' 
+        'edit stack ' 
+        'edit heap  ';
+    }
+}
+
+@media (max-width: 575px) {
+    body {
+        grid-template-columns: 100%;
+        grid-template-rows: 50vh 50vh 30vh 30vh;
+        grid-template-areas:
+        'edit  ' 
+        'output' 
+        'stack '
+        'heap  ';
+    }
 }

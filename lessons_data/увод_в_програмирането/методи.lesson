@@ -1,11 +1,2 @@
 <%=title=%>
-Clusterfucked testing page for bullshit idiot code
-<%=code=%>
-var a = 10;
-var b = 'hello';
-var a1 = [1, 2, 3];
-var a2 = [4, 5, 6];
-var a3 = [7, 8, 9];
-function test() {
-    var d = 'inside function';
-}
+    Методи
