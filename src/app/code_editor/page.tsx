@@ -1,9 +1,9 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './styles.module.css';
 import './global.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Fauna_One, Roboto } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 const jsInterpreter = require('js-interpreter');
 const ts = require('typescript');
 
@@ -17,19 +17,29 @@ export default function Page({
 }: {
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    let sandbox: any;
+    //#region - Variables -
+    let sandbox:   any;
+    let input:     React.Ref<HTMLInputElement>    = React.createRef();
     let code:      React.Ref<HTMLTextAreaElement> = React.createRef();
     let output:    React.Ref<HTMLTextAreaElement> = React.createRef();
     let stack:     React.Ref<HTMLDivElement>      = React.createRef();
     let heap:      React.Ref<HTMLDivElement>      = React.createRef();
+    let runButton: React.Ref<HTMLButtonElement>   = React.createRef();
+    let goButton:  React.Ref<HTMLButtonElement>   = React.createRef();
     let isMounted: boolean                        = false;
+    let sendIn:    boolean                        = false;
+    let paused:    boolean                        = false;
     let colors:    Array<string>                  = [
         'background-color: #f0fcff; color: #051c2d;',
         'background-color: #fff1f2; color: #42090a;',
         'background-color: #fffeec; color: #42090a;',
         'background-color: #f2fff2; color: #082301;',
     ];
+    //#endregion
 
+    // Check if the component is mounted.
+    // If it's not,  we don't want to run
+    // the memory tracker.
     useEffect(() => {
         isMounted = true;
         return () => {
@@ -37,11 +47,38 @@ export default function Page({
         };
     }, []);
 
-    const write = (message: any) => {
-        output.current!.innerHTML += typeof message === 'object' || Array.isArray(message) ? JSON.stringify(message) : message;
-        output.current!.innerHTML += '\n';
+    const send = () => {
+        sendIn = true;
     }
 
+    //#region - Console -
+    const write = (message: any) =>
+        output.current!.innerHTML += typeof message === 'object' || Array.isArray(message) ? JSON.stringify(message) : message;
+
+    const read = (): Promise<any> => 
+        new Promise((resolve) => {
+            sendIn = false;
+            const loop = () => {
+                if(sendIn) {
+                    sendIn = false;
+                    resolve(input.current!.value);
+                }
+                else setTimeout(loop, 100);
+            }
+            loop();
+        });
+
+    const stopCode = () => {
+        write('\n-- Code stopped --\n');
+        paused = true;
+    };
+    //#endregion
+
+    const continueCode = () => {
+        paused = false;
+    }
+
+    //#region - Memory Dumper -
     const renderMemDump = (variables: any) => {
         let colorCounter: number = 0;
 
@@ -55,7 +92,6 @@ export default function Page({
               });
         }
 
-        if(!isMounted) return;
         stack.current!.innerHTML = '';
         heap.current!.innerHTML = '';
 
@@ -78,7 +114,7 @@ export default function Page({
                     </div>`;
                     colorCounter++;
             }
-            else if(variables[variable] === '!FUNCTION!')  // Just point out it's a function.
+            else if(variables[variable] === 'function')  // Just point out it's a function.
                 stack.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
                         <div>${ variable }:</div>
@@ -108,9 +144,9 @@ export default function Page({
             return array;
         }
         else if (variable.class === 'Function')
-            return "!FUNCTION!";    // IDK what  else  to   return,  we  won't
-                                    // render   the   actual  function   logic
-                                    // because it will take up too much space.
+            return "function"; // IDK what  else  to   return,  we  won't
+                               // render   the   actual  function   logic
+                               // because it will take up too much space.
         else { // Everything else is just an object
             let obj: any = {};
             for (const property in variable.properties)
@@ -129,15 +165,15 @@ export default function Page({
         let variables: any = {};
         // Set the properties that shouldn't be returned.
         const hiddenProperties: Array<string> = [  
-            'Array',     'Boolean',     'Date',     'Error',     'EvalError',
+            'Array',  'window',  'Boolean',   'Date',  'Error',  'EvalError',
             'Function',   'Infinity',   'JSON',  'Math',   'NaN',   'Number',
             'Object',  'RangeError',  'ReferenceError',  'RegExp',  'String',
-            'SyntaxError',    'TypeError',    'URIError',    'clearInterval',
+            'SyntaxError', 'TypeError', 'this',  'URIError', 'clearInterval',
             'clearTimeout', 'constructor', 'decodeURI', 'decodeURIComponent',
             'dump',  'encodeURI',  'encodeURIComponent',   'escape',  'eval',
             'isFinite', 'isNaN',  'parseFloat',  'parseInt',  'read', 'self',
-            'setInterval',   'setTimeout',  'this',   'undefined',   'write',
-            'unescape', 'window'
+            'setInterval',   'setTimeout',  'undefined',   'stop',   'write',
+            'unescape',
         ];
 
         // Removing the  VM properties from  the array.
@@ -151,38 +187,76 @@ export default function Page({
 
     const memTracker = () => {
         console.log('Tracker initialized');
-        return new Promise(resolve => {
-            const dump = () => {
+        return new Promise(() => {
+            const loop = () => {
                 memDump();
 		        if (isMounted)
-                	setTimeout(dump, 100);
+                	setTimeout(loop, 100);
             }
-            dump();
+            loop();
+        });
+    }
+    //#endregion
+
+    const runCode = () => {
+        return new Promise(() => {
+            const loop = () => {
+                if(paused) {
+                    setTimeout(loop, 0);
+                    return;
+                }
+
+                if(sandbox.step()) setTimeout(loop, 0);
+                else {
+                    runButton.current!.disabled = false;
+                    return;
+                }
+            }
+            loop();
         });
     }
 
-    const ExecCode = () => {
-        // Clear previous output, if there's any.
+    const loadCode = () => {
+        // Reset the console state
+        sendIn = false;
+        paused = false;
         output.current!.innerHTML = '';
+        runButton.current!.disabled = true;
         // Initialize the sandbox.
-        sandbox = new jsInterpreter(ts.transpile(code.current!.value), (interpreter: any, globalObject: any) => {            
+        sandbox = new jsInterpreter(ts.transpile(code.current!.value), (interpreter: any, globalObject: any) => {
+            const wrapper = (callback: any) => {
+                paused = true;
+                read().then(value => {
+                    callback(value);
+                    paused = false;
+                });
+            };
+
             interpreter.setProperty(globalObject, 'write', interpreter.createNativeFunction(write));
+            interpreter.setProperty(globalObject, 'stop',  interpreter.createNativeFunction(stopCode));
+            interpreter.setProperty(globalObject, 'read',  interpreter.createAsyncFunction(wrapper));
         });
-        console.log(output.current!);
-        console.log(stack.current!);
-        console.log(heap.current!);
         // Attach the memory tracker
         memTracker();
         // Run the sandbox/ VM.
-        try       { sandbox.run();    }
-        catch (e) { console.error(e); }
+        try       { runCode(); }
+        catch (e) { write(e);  }
     }
 
     return(
         <body className={ roboto.className }>
             <main className='card'>
                 <nav className='card-header'>
-                    <button className='btn btn-success' onClick={ ExecCode }>▷</button>
+                    <button
+                        className='btn btn-success'
+                        onClick={ loadCode }
+                        ref={ runButton }
+                    >▷</button>
+                    <button
+                        className='btn btn-outline-dark'
+                        onClick={ continueCode }
+                        ref={ goButton }
+                    >Продължи</button>
                 </nav>
                 <textarea ref={ code } className='card-body'>
                     // Code
@@ -192,6 +266,10 @@ export default function Page({
                 <div className='card-header'>Изход</div>
                 <textarea ref={ output } className='card-body' readOnly>
                 </textarea>
+                <div className='d-flex card-footer'>
+                    <input className='form-control' ref={ input }></input>
+                    <button onClick={ send } className='btn btn-outline-dark'>Въведи</button>
+                </div>
             </div>
             <div className={ styles.Stack + ' card'}>
                 <div className='card-header'>Стек</div>

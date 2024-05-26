@@ -50,7 +50,7 @@ textarea {
 @media (max-width: 575px) {
     body {
         grid-template-columns: 100%;
-        grid-template-rows: 50vh 50vh 30vh 30vh;
+        grid-template-rows: 75vw 75vw 60vw 60vw;
         grid-template-areas:
         'edit  ' 
         'output' 
