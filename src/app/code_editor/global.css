@@ -48,6 +48,7 @@ input + button {
 
 @media (max-width: 768px) {
     body {
+        grid-template-rows: 40% auto auto;
         grid-template-areas:
         'edit output' 
         'edit stack ' 
