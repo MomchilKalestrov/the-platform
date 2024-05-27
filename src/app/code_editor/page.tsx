@@ -27,7 +27,7 @@ export default function Page({
     //#region - Variables -
     let sandbox:   any;
     let input:     React.Ref<HTMLInputElement>    = React.createRef();
-    let code:      string 		          = 'return;';
+    let code:      string 		          = `let a = 0; while(a++ < 20) write('[as]'); a = 0; stop(); while(a++ < 20) write('[as]');`;
     let output:    React.Ref<HTMLTextAreaElement> = React.createRef();
     let stack:     React.Ref<HTMLDivElement>      = React.createRef();
     let heap:      React.Ref<HTMLDivElement>      = React.createRef();
@@ -76,7 +76,7 @@ export default function Page({
         });
 
     const stopCode = () => {
-        write('\n-- Code stopped --\n');
+	write('\n-- Кодът е паузиран, за да продължите натиснете "Продължи" --\n');
         paused = true;
     };
     //#endregion
@@ -275,9 +275,9 @@ export default function Page({
                     theme="github"		
                     fontSize='1rem'
                     lineHeight='1.5rem'
-		    height='100%'
-		    width='100%'
-		    onChange={ saveCode}
+		            height='100%'
+		            width='100%'
+		            onChange={ saveCode}
                     showPrintMargin={false}
                     showGutter={false}
                     highlightActiveLine={true}
