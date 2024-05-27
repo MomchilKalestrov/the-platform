@@ -3,9 +3,13 @@
     --header-height: 3.6rem;
 }
 
+textarea {
+  font-family: 'Courier New', monospace !important;
+}
+
 *::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
   
   /* Hide scrollbar for IE, Edge and Firefox */
 * {
