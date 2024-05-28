@@ -263,7 +263,7 @@ export default function Page({
                 </textarea>
             </main>
             <div className={ styles.Output + ' card'}>
-                <div className='card-header'>Изход</div>
+                <div className='card-header'>Конзола</div>
                 <textarea ref={ output } className='card-body' readOnly>
                 </textarea>
                 <div className='d-flex card-footer'>
