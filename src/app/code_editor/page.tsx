@@ -1,9 +1,16 @@
 'use client'
 import React, { useEffect, useState } from 'react';
+// Editor imports
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/ext-language_tools';
+// Stylesheets improrts
 import styles from './styles.module.css';
 import './global.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Roboto } from 'next/font/google';
+// Sandbox imports
 const jsInterpreter = require('js-interpreter');
 const ts = require('typescript');
 
@@ -20,7 +27,7 @@ export default function Page({
     //#region - Variables -
     let sandbox:   any;
     let input:     React.Ref<HTMLInputElement>    = React.createRef();
-    let code:      React.Ref<HTMLTextAreaElement> = React.createRef();
+    let code:      string 		          = `let a = 0; while(a++ < 20) write('[as]'); a = 0; stop(); while(a++ < 20) write('[as]');`;
     let output:    React.Ref<HTMLTextAreaElement> = React.createRef();
     let stack:     React.Ref<HTMLDivElement>      = React.createRef();
     let heap:      React.Ref<HTMLDivElement>      = React.createRef();
@@ -69,7 +76,7 @@ export default function Page({
         });
 
     const stopCode = () => {
-        write('\n-- Code stopped --\n');
+	write('\n-- Кодът е паузиран, за да продължите натиснете "Продължи" --\n');
         paused = true;
     };
     //#endregion
@@ -127,7 +134,7 @@ export default function Page({
                         <div>${ variable }:</div>
                         <div>${ typeof variables[variable] === 'string' ? `\"${ variables[variable] }\"` : variables[variable] }</div>
                     </div>`;
-        }
+    }
 
     const parseType = (variable: any): any => {
         if (typeof variable !== 'object')   // When It's a primitive object.
@@ -198,6 +205,10 @@ export default function Page({
     }
     //#endregion
 
+    const saveCode = (value: string) => {
+        code = value;
+    }
+
     const runCode = () => {
         return new Promise(() => {
             const loop = () => {
@@ -223,7 +234,7 @@ export default function Page({
         output.current!.innerHTML = '';
         runButton.current!.disabled = true;
         // Initialize the sandbox.
-        sandbox = new jsInterpreter(ts.transpile(code.current!.value), (interpreter: any, globalObject: any) => {
+        sandbox = new jsInterpreter(ts.transpile(code), (interpreter: any, globalObject: any) => {
             const wrapper = (callback: any) => {
                 paused = true;
                 read().then(value => {
@@ -258,9 +269,49 @@ export default function Page({
                         ref={ goButton }
                     >Продължи</button>
                 </nav>
-                <textarea ref={ code } className='card-body'>
-                    // Code
-                </textarea>
+                <AceEditor
+                    placeholder="// code"
+                    mode="javascript"
+                    theme="github"		
+                    fontSize='1rem'
+                    lineHeight='1.5rem'
+		            height='100%'
+		            width='100%'
+		            onChange={ saveCode}
+                    showPrintMargin={false}
+                    showGutter={false}
+                    highlightActiveLine={true}
+                    value={`// This is the code editor
+// For highlighting, it uses Ace
+// For executing code, it uses js-interpreter
+
+// There are functions for debugging:
+// - The memory tracker (starts automatically)
+// - The 'stop()' function
+
+// There are also functions for IO:
+// - The write function
+// - The read function
+
+let a = 0;
+while(a++ < 20)
+  write('[as]');
+a = 0;
+
+stop();
+
+while(a++ < 20)
+  write('[as]');`}
+                    setOptions={{
+                        enableBasicAutocompletion: true,
+                        enableLiveAutocompletion: false,
+                        enableSnippets: false,
+                        showLineNumbers: false,
+                        tabSize: 2,
+                    }}
+                />
+            
+            
             </main>
             <div className={ styles.Output + ' card'}>
                 <div className='card-header'>Конзола</div>
