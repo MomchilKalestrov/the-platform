@@ -28,7 +28,7 @@
     outline: none;
     border: 1px solid var(--bs-border-color-translucent);
     border-radius: var(--bs-card-border-radius);
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Source Code Pro", "source-code-pro", monospace !important;
     line-height: 1rem;
     padding: calc(var(--bs-card-border-radius) / 2);
     width: 100%;
@@ -40,7 +40,7 @@
 }
 
 .CodeBlock input {
-    font-family: 'Courier New', Courier, monospace;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Source Code Pro", "source-code-pro", monospace !important;
 }
 
 .StackContainer {
@@ -54,7 +54,6 @@
 }
 
 .StackContainer, .HeapContainer {
-    font-family: 'Courier New', Courier, monospace;
     overflow: scroll;
     max-height: 12rem;
     text-align: left;

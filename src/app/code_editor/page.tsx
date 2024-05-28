@@ -1,9 +1,9 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 // Editor imports
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-cloud_editor';
 import 'ace-builds/src-noconflict/ext-language_tools';
 // Stylesheets improrts
 import styles from './styles.module.css';
@@ -26,17 +26,17 @@ export default function Page({
 }) {
     //#region - Variables -
     let sandbox:   any;
-    let input:     React.Ref<HTMLInputElement>    = React.createRef();
-    let code:      string 		          = `let a = 0; while(a++ < 20) write('[as]'); a = 0; stop(); while(a++ < 20) write('[as]');`;
-    let output:    React.Ref<HTMLTextAreaElement> = React.createRef();
-    let stack:     React.Ref<HTMLDivElement>      = React.createRef();
-    let heap:      React.Ref<HTMLDivElement>      = React.createRef();
-    let runButton: React.Ref<HTMLButtonElement>   = React.createRef();
-    let goButton:  React.Ref<HTMLButtonElement>   = React.createRef();
+    let inputRef:  React.Ref<HTMLInputElement>    = React.createRef();
+    let outputRef: React.Ref<HTMLTextAreaElement> = React.createRef();
+    let stackRef:  React.Ref<HTMLDivElement>      = React.createRef();
+    let heapRef:   React.Ref<HTMLDivElement>      = React.createRef();
+    let runRef:    React.Ref<HTMLButtonElement>   = React.createRef();
+    let goRef:     React.Ref<HTMLButtonElement>   = React.createRef();
+    let code:      string 		                  = `let a = 0; while(a++ < 20) write('[as]'); a = 0; stop(); while(a++ < 20) write('[as]');`;
     let isMounted: boolean                        = false;
     let sendIn:    boolean                        = false;
     let paused:    boolean                        = false;
-    let colors:    Array<string>                  = [
+    const colors:    Array<string>                  = [
         'background-color: #f0fcff; color: #051c2d;',
         'background-color: #fff1f2; color: #42090a;',
         'background-color: #fffeec; color: #42090a;',
@@ -54,13 +54,13 @@ export default function Page({
         };
     }, []);
 
+    //#region - Console -
     const send = () => {
         sendIn = true;
     }
 
-    //#region - Console -
     const write = (message: any) =>
-        output.current!.innerHTML += typeof message === 'object' || Array.isArray(message) ? JSON.stringify(message) : message;
+        outputRef.current!.innerHTML += typeof message === 'object' || Array.isArray(message) ? JSON.stringify(message) : message;
 
     const read = (): Promise<any> => 
         new Promise((resolve) => {
@@ -68,7 +68,7 @@ export default function Page({
             const loop = () => {
                 if(sendIn) {
                     sendIn = false;
-                    resolve(input.current!.value);
+                    resolve(inputRef.current!.value);
                 }
                 else setTimeout(loop, 100);
             }
@@ -76,13 +76,17 @@ export default function Page({
         });
 
     const stopCode = () => {
-	write('\n-- Кодът е паузиран, за да продължите натиснете "Продължи" --\n');
+	    write('\n--\nКодът е паузиран.За да продължите, натиснете "Продължи".\n--\n');
         paused = true;
+        goRef.current!.disabled = false;
+        console.log('The code has been pased.');
     };
     //#endregion
 
     const continueCode = () => {
         paused = false;
+        goRef.current!.disabled = true;
+        console.log('The code is continuing.');
     }
 
     //#region - Memory Dumper -
@@ -99,8 +103,8 @@ export default function Page({
               });
         }
 
-        stack.current!.innerHTML = '';
-        heap.current!.innerHTML = '';
+        stackRef.current!.innerHTML = '';
+        heapRef.current!.innerHTML = '';
 
         // Print out the variables.
         for (const variable in variables)
@@ -110,26 +114,26 @@ export default function Page({
             ) {
                 // If it's an object, place the object reference
                 // to  the stack and the  instance to the  heap.
-                stack.current!.innerHTML +=
+                stackRef.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
                         <div style=\"${ colors[colorCounter & 0b11] }\">${ variable }:</div>
                         <div style=\"${ colors[colorCounter & 0b11] }\">Обект</div>
                     </div>`;
-                heap.current!.innerHTML  +=
+                heapRef.current!.innerHTML  +=
                     `<div>
                         <pre style=\"${ colors[colorCounter & 0b11] }\">${ stylizeJSON(JSON.stringify(variables[variable], undefined, 2)) }</pre>
                     </div>`;
                     colorCounter++;
             }
             else if(variables[variable] === 'function')  // Just point out it's a function.
-                stack.current!.innerHTML +=
+                stackRef.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
                         <div>${ variable }:</div>
                         <div>Функция</div>
                     </div>`;
             else
                 // All primitives are allocated in the stack
-                stack.current!.innerHTML +=
+                stackRef.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
                         <div>${ variable }:</div>
                         <div>${ typeof variables[variable] === 'string' ? `\"${ variables[variable] }\"` : variables[variable] }</div>
@@ -198,13 +202,14 @@ export default function Page({
             const loop = () => {
                 memDump();
 		        if (isMounted)
-                	setTimeout(loop, 100);
+                	setTimeout(loop, (process.env.CODE_RUN_TIMEOUT as unknown as number) / 2);
             }
             loop();
         });
     }
     //#endregion
 
+    //#region - Code Execution -
     const saveCode = (value: string) => {
         code = value;
     }
@@ -213,13 +218,13 @@ export default function Page({
         return new Promise(() => {
             const loop = () => {
                 if(paused) {
-                    setTimeout(loop, 0);
+                    setTimeout(loop, process.env.CODE_RUN_TIMEOUT as unknown as number);
                     return;
                 }
 
-                if(sandbox.step()) setTimeout(loop, 0);
+                if(sandbox.step()) setTimeout(loop, process.env.CODE_RUN_TIMEOUT as unknown as number);
                 else {
-                    runButton.current!.disabled = false;
+                    runRef.current!.disabled = false;
                     return;
                 }
             }
@@ -231,8 +236,9 @@ export default function Page({
         // Reset the console state
         sendIn = false;
         paused = false;
-        output.current!.innerHTML = '';
-        runButton.current!.disabled = true;
+        goRef.current!.disabled = true;
+        outputRef.current!.innerHTML = '';
+        runRef.current!.disabled = true;
         // Initialize the sandbox.
         sandbox = new jsInterpreter(ts.transpile(code), (interpreter: any, globalObject: any) => {
             const wrapper = (callback: any) => {
@@ -253,6 +259,7 @@ export default function Page({
         try       { runCode(); }
         catch (e) { write(e);  }
     }
+    //#endregion
 
     return(
         <body className={ roboto.className }>
@@ -261,18 +268,19 @@ export default function Page({
                     <button
                         className='btn btn-success'
                         onClick={ loadCode }
-                        ref={ runButton }
+                        ref={ runRef }
                     >▷</button>
                     <button
                         className='btn btn-outline-dark'
                         onClick={ continueCode }
-                        ref={ goButton }
+                        ref={ goRef }
+                        onLoad={ stopCode }
                     >Продължи</button>
                 </nav>
                 <AceEditor
                     placeholder="// code"
                     mode="javascript"
-                    theme="github"		
+                    theme="cloud_editor"		
                     fontSize='1rem'
                     lineHeight='1.5rem'
 		            height='100%'
@@ -310,25 +318,23 @@ while(a++ < 20)
                         tabSize: 2,
                     }}
                 />
-            
-            
             </main>
             <div className={ styles.Output + ' card'}>
                 <div className='card-header'>Конзола</div>
-                <textarea ref={ output } className='card-body' readOnly>
+                <textarea ref={ outputRef } className='card-body' readOnly>
                 </textarea>
                 <div className='d-flex card-footer'>
-                    <input className='form-control' ref={ input }></input>
+                    <input className='form-control' ref={ inputRef }></input>
                     <button onClick={ send } className='btn btn-outline-dark'>Въведи</button>
                 </div>
             </div>
             <div className={ styles.Stack + ' card'}>
                 <div className='card-header'>Стек</div>
-                <div ref={ stack }></div>
+                <div ref={ stackRef }></div>
             </div>
             <div className={ styles.Heap + ' card'}>
                 <div className='card-header'>Хийп</div>
-                <div ref={ heap }></div>
+                <div ref={ heapRef }></div>
             </div>
         </body>
     );
