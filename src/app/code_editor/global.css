@@ -14,6 +14,11 @@ body {
     padding: 0.5rem;
 }
 
+pre {
+    margin: 0 !important;
+    font-size: 1rem !important;
+}
+
 body > * {
     overflow: scroll;
 }

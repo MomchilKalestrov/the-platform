@@ -123,8 +123,9 @@ export default function Page({
                     `<div>
                         <pre style=\"${ colors[colorCounter & 0b11] }\">${ stylizeJSON(JSON.stringify(variables[variable], undefined, 2)) }</pre>
                     </div>`;
-                    colorCounter++;
-            }
+            	colorCounter++;
+debugger;	    
+}
             else if(variables[variable] === 'function')  // Just point out it's a function.
                 stackRef.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
