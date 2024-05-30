@@ -291,8 +291,10 @@ debugger;
                     showGutter={false}
                     highlightActiveLine={true}
                     value={`// This is the code editor
-// For highlighting, it uses Ace
-// For executing code, it uses js-interpreter
+// For highlighting, it uses Ace;
+// For executing code, it uses js-interpreter;
+// The programming language is JS with  optional
+// loose support for translation from TS to JS 
 
 // There are functions for debugging:
 // - The memory tracker (starts automatically)
