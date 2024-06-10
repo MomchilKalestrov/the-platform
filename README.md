@@ -30,3 +30,5 @@ By default the site will be hosted on `localhost:300`
 This is my first Next.js project please ignore sh*t code :)
 
 This junk is under GPLv3
+
+![bill](https://github.com/MomchilKalestrov/the-platform/blob/main/billFromEstonia.png)
