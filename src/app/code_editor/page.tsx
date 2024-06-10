@@ -95,7 +95,7 @@ export default function Page({
 
         // Make arrays take only one line.
         const stylizeJSON = (json: string): string => {
-            const regex = /\[(.*?)\]/gs;
+            const regex: RegExp = /\[(.*?)\]/gs;
 
             return json.replace(regex, (match, p1) => {
                 const cleanedContent = p1.replace(/\s+/g, ' ').trim();
@@ -123,9 +123,8 @@ export default function Page({
                     `<div>
                         <pre style=\"${ colors[colorCounter & 0b11] }\">${ stylizeJSON(JSON.stringify(variables[variable], undefined, 2)) }</pre>
                     </div>`;
-            	colorCounter++;
-debugger;	    
-}
+            	colorCounter++;    
+            }
             else if(variables[variable] === 'function')  // Just point out it's a function.
                 stackRef.current!.innerHTML +=
                     `<div class=\"${ styles.Variable }\">
@@ -191,7 +190,10 @@ debugger;
         // Removing the  VM properties from  the array.
         // Basically adding the variables to the array.
         for (const property in properties)
-            if (!hiddenProperties.includes(property))
+            if (
+                !hiddenProperties.includes(property) &&
+                properties[property] !== undefined
+            )
                 variables[property] = parseType(properties[property]);
 
         renderMemDump(variables);
@@ -263,7 +265,7 @@ debugger;
     //#endregion
 
     return(
-        <body className={ roboto.className }>
+        <div className={ roboto.className + ' ' + styles.Container}>
             <main className='card'>
                 <nav className='card-header'>
                     <button
@@ -339,6 +341,6 @@ while(a++ < 20)
                 <div className='card-header'>Хийп</div>
                 <div ref={ heapRef }></div>
             </div>
-        </body>
+        </div>
     );
 }

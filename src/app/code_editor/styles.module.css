@@ -1,3 +1,19 @@
+.Container {
+    padding: 0px;
+    margin: 0px;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 50vw;
+    grid-template-rows: calc(50% + 2rem) auto;
+    gap: 0.5rem;
+    grid-template-areas:
+    'edit output output' 
+    'edit stack  heap';
+    background-color: #212529 !important;
+    padding: 0.5rem;
+}
+
 .Output {
     grid-area: output;
 }
@@ -31,4 +47,26 @@
 .Stack h1, .Heap h1 {
     text-align: center;
     font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .Container {
+        grid-template-rows: 40% auto auto;
+        grid-template-areas:
+        'edit output' 
+        'edit stack ' 
+        'edit heap  ';
+    }
+}
+
+@media (max-width: 575px) {
+    .Container {
+        grid-template-columns: 100%;
+        grid-template-rows: 75vw 75vw 60vw 60vw;
+        grid-template-areas:
+        'edit  ' 
+        'output' 
+        'stack '
+        'heap  ';
+    }
 }
