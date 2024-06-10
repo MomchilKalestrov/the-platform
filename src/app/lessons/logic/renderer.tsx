@@ -43,7 +43,7 @@ export function RenderLesson(data: string): React.JSX.Element {
     return <>{ html }</>;
 }
 
-export function RenderMenu(data: JSON): JSX.Element {
+export function RenderMenu(data: {[key: string]: any[]}): JSX.Element {
     let html: Array<React.JSX.Element> = [];
     let keys: Array<string> = Object.keys(data);
 

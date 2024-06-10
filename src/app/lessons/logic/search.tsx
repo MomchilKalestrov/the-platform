@@ -30,7 +30,7 @@ export default function RenderSearch(query: string): React.JSX.Element {
     // Keys is the names of the lessons sections
     // HTML is where we're storing the generated DOM elements
     // IndexCount is a counter for the keys of the elements in the array.
-    let data: JSON = List();
+    let data: {[key: string]: any[]} = List();
     let keys: Array<string> = Object.keys(data);
     let html: Array<React.JSX.Element> = [];
     let indexCount = 0;
