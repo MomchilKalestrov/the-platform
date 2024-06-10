@@ -1,6 +1,6 @@
 import Link from "next/link";
-import CodeBlock from "@/app/components/code";
-import ListSection from "@/app/components/listSection";
+import CodeBlock from "../../components/code";
+import ListSection from "../../components/listSection";
 
 export function RenderLesson(data: string): React.JSX.Element {
     // I'm an idiot. Instead of using static HTML or even just something like EJS,

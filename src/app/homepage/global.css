@@ -1,0 +1,23 @@
+header {
+    background-color: #151515;
+    top: 0px;
+    position: sticky !important;
+}
+
+nav, nav div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+nav div {
+    justify-content: center;
+}
+
+@media (max-width: 991px) {
+    nav {
+        justify-content: center !important;
+    }
+}

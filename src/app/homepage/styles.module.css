@@ -1,0 +1,38 @@
+.NavTitle {
+    aspect-ratio: 126 / 17;
+    height: 2.6rem;
+    padding: 0.3rem 0px 0.3rem 0px;
+    width: calc(2rem * 126 / 17);
+    max-width: 100%;
+}
+
+.Splash {
+    background-color: #151515;
+    color: white;
+}
+
+.Splash h1 {
+    font-weight: bold;
+}
+
+.Splash > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.Splash div > div, .Splash div > img {
+    width: 48%;
+}
+
+@media (max-width: 576px) {
+    .Splash div > div, .Splash div > img {
+        width: 100%;
+    }
+
+    .Splash > div {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}

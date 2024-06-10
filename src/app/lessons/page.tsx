@@ -1,4 +1,3 @@
-
 import Reader from './logic/reader'
 import { RenderLesson } from './logic/renderer'
 import RenderSearch from './logic/search'
