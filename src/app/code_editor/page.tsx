@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 // Editor imports
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript';
-import 'ace-builds/src-noconflict/theme-cloud_editor';
+import 'ace-builds/src-noconflict/theme-github_dark';
 import 'ace-builds/src-noconflict/ext-language_tools';
 // Stylesheets improrts
 import styles from './styles.module.css';
@@ -65,6 +65,7 @@ export default function Page({
     const read = (): Promise<any> => 
         new Promise((resolve) => {
             sendIn = false;
+            write('\n--\nКодът очаква вход от потребителя.\n--\n');
             const loop = () => {
                 if(sendIn) {
                     sendIn = false;
@@ -265,7 +266,7 @@ export default function Page({
     //#endregion
 
     return(
-        <div className={ roboto.className + ' ' + styles.Container}>
+        <div className={ roboto.className + ' ' + styles.Container} {... {'data-bs-theme': 'dark'}}>
             <main className='card'>
                 <nav className='card-header'>
                     <button
@@ -274,7 +275,7 @@ export default function Page({
                         ref={ runRef }
                     >▷</button>
                     <button
-                        className='btn btn-outline-dark'
+                        className='btn btn-outline-light'
                         onClick={ continueCode }
                         ref={ goRef }
                         onLoad={ stopCode }
@@ -283,7 +284,7 @@ export default function Page({
                 <AceEditor
                     placeholder="// code"
                     mode="javascript"
-                    theme="cloud_editor"		
+                    theme="github_dark"		
                     fontSize='1rem'
                     lineHeight='1.5rem'
 		            height='100%'
@@ -330,7 +331,7 @@ while(a++ < 20)
                 </textarea>
                 <div className='d-flex card-footer'>
                     <input className='form-control' ref={ inputRef }></input>
-                    <button onClick={ send } className='btn btn-outline-dark'>Въведи</button>
+                    <button onClick={ send } className='btn btn-outline-light'>Въведи</button>
                 </div>
             </div>
             <div className={ styles.Stack + ' card'}>

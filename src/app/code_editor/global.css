@@ -25,6 +25,7 @@ textarea {
     outline: none;
     line-height: 1rem;
     font-size: 1rem;
+    background-color: var(--bs-card-bg);
 }
 
 button + button {
