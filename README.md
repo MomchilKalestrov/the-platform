@@ -32,3 +32,5 @@ This is my first Next.js project please ignore sh*t code :)
 This junk is under GPLv3
 
 ![bill](https://github.com/MomchilKalestrov/the-platform/blob/main/billFromEstonia.png)
+
+(someone remind me to remove this image if I'm going to a competition with this)
