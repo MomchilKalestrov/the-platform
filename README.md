@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# About
 
-## Getting Started
+This is a code learning platform. The idea for the website came when a CompSci teacher made a complaint that it was hard to visualize memory allocation. From there it quickly grew to a platform that will have currated lessons and an IDE with debugging capabilites, visualizing how variables and objects are stored in the stack/heap.
 
-First, run the development server:
+# How to run
+
+You don't. JK you just need NPM. Install the dependencies and run the dev script:
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It should look something like this.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+By default the site will be hosted on `localhost:300`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Structure
 
-## Learn More
+`/lessons` - the lessons and stuff. Currently there are none since I'm lazy
 
-To learn more about Next.js, take a look at the following resources:
+`/code_editor`- the code editor
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`/homepage` - guess what this one is
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+`/` - will redirect to `/homepage`
 
-## Deploy on Vercel
+# Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This is my first Next.js project please ignore sh*t code :)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This junk is under GPLv3
