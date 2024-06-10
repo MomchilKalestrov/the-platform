@@ -18,23 +18,23 @@ export default function Layout({
         <nav className='container navbar-expand-md px-0 px-md-3'>
           <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div>
-            <button className='btn btn-outline-light btn-sm'>Начало</button>
-            <button className='btn btn-outline-light btn-sm'>Уроци</button>
-            <button className='btn btn-outline-light btn-sm'>Кодов редактор</button>
-            <button className='btn btn-outline-light btn-sm'>Контакти</button>
+            <a className='btn btn-outline-light btn-sm' href='/homepage'>Начало</a>
+            <a className='btn btn-outline-light btn-sm' href='/lessons'>Уроци</a>
+            <a className='btn btn-outline-light btn-sm' href='/code_editor'>Кодов редактор</a>
+            <a className='btn btn-outline-light btn-sm' href='/contacts'>Контакти</a>
           </div>
         </nav>
       </header>
       <div className={ styles.Splash }>
         <div className='container'>
-          <div>
-            <h1>The Platform</h1>
-            <p className='text-secondary'>Добре дошли в най-достъпната платформа за начинаещи програмисти. Започни обучението си тук!</p>
+          <div className='my-2'>
+            <h2>The Platform</h2>
+            <p>Добре дошли в най-достъпната платформа за начинаещи програмисти. Започни обучението си тук!</p>
           </div>
-          <img src='/splash.svg' />
+          <img className='my-2' src='/splash.svg' />
         </div>
       </div>
-      <main className='container'>
+      <main>
         { children }
       </main>
     </>

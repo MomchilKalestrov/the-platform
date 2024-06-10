@@ -11,6 +11,5 @@ export default function Reader(lesson: string = 'bad'): string {
     return fs.readFileSync(`${ process.env.LESSONS_URL as string }${lesson}.lesson`, 'utf8');
 }
 
-export function List(): {[key: string]: any[]} {
-    return JSON.parse(fs.readFileSync(`${ process.env.LESSONS_URL }lesson.map.json`).toString());
-}
+export const List = (): {[key: string]: any[]} =>
+    JSON.parse(fs.readFileSync(`${ process.env.LESSONS_URL }lesson.map.json`).toString());

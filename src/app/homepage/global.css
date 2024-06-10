@@ -1,5 +1,9 @@
+* {
+    font-size: 1.25rem;
+}
+
 header {
-    background-color: #151515;
+    background-color: var(--bs-dark);
     top: 0px;
     position: sticky !important;
 }
@@ -14,6 +18,35 @@ nav, nav div {
 
 nav div {
     justify-content: center;
+}
+
+p {
+    margin: 0px;
+}
+
+main div > * {
+    text-align: center;
+}
+
+main div > *:not(:last-child), main > * {
+    margin-bottom: 0.5rem;
+}
+
+main div:nth-child(even) {
+    background-color: var(--bs-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+h1 {
+    line-height: 2rem;
+    font-size: 2rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(var(--bs-dark-rgb), 0.075);
+    margin: 0px 0px 0.5rem 0px;
 }
 
 @media (max-width: 991px) {
