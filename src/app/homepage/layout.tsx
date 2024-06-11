@@ -29,7 +29,7 @@ export default function Layout({
         <div className='container'>
           <div className='my-2'>
             <h2>The Platform</h2>
-            <p>Добре дошли в най-достъпната платформа за начинаещи програмисти. Започни обучението си тук!</p>
+            <p>Добре дошли в най-достъпната платформа за начинаещи програмисти. Започни обучението си <a className='text-secondary' href='/lessons'>тук!</a></p>
           </div>
           <img className='my-2' src='/splash.svg' />
         </div>
