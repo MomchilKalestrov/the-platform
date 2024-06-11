@@ -22,6 +22,13 @@
     width: 48%;
 }
 
+.Splash div > img {
+    animation-name: hover;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
 .OrganizationsList img {
     aspect-ratio: 1;
     height: 8rem;
@@ -30,6 +37,33 @@
 .FooterImg {
     width: 4rem;
     height: 4rem;
+}
+
+@keyframes hover {
+    0% {
+        transform: none;
+    }
+    16.66% {
+        transform: rotate(-45deg) translateY(-1rem) rotate(45deg);
+    }
+    33.33% {
+        transform: rotate(-135deg) translateY(-1rem) rotate(135deg);
+    }
+    50% {
+        transform: rotate(-180deg) translateY(0rem) rotate(180deg);
+    }
+    50.001% {
+        transform: none;
+    }
+    66.66% {
+        transform: rotate(45deg) translateY(-1rem) rotate(-45deg);
+    }
+    83.33% {
+        transform: rotate(135deg) translateY(-1rem) rotate(-135deg);
+    }
+    100% {
+        transform: rotate(180deg) translateY(0rem) rotate(-180deg);
+    }
 }
 
 @media (max-width: 576px) {
