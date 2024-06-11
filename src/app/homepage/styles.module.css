@@ -27,6 +27,11 @@
     height: 8rem;
 }
 
+.FooterImg {
+    width: 4rem;
+    height: 4rem;
+}
+
 @media (max-width: 576px) {
     .Splash div > div, .Splash div > img {
         width: 100%;

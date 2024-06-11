@@ -4,8 +4,6 @@
 
 header {
     background-color: var(--bs-dark);
-    top: 0px;
-    position: sticky !important;
 }
 
 nav, nav div {

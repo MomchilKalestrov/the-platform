@@ -18,10 +18,10 @@ export default function Layout({
         <nav className='container navbar-expand-md px-0 px-md-3'>
           <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div>
-            <a className='btn btn-outline-light btn-sm' href='/homepage'>Начало</a>
-            <a className='btn btn-outline-light btn-sm' href='/lessons'>Уроци</a>
+            <a className='btn btn-outline-light btn-sm' href='/homepage'   >Начало</a>
+            <a className='btn btn-outline-light btn-sm' href='/lessons'    >Уроци</a>
             <a className='btn btn-outline-light btn-sm' href='/code_editor'>Кодов редактор</a>
-            <a className='btn btn-outline-light btn-sm' href='/contacts'>Контакти</a>
+            <a className='btn btn-outline-light btn-sm' href='/contacts'   >Контакти</a>
           </div>
         </nav>
       </header>
@@ -37,6 +37,18 @@ export default function Layout({
       <main>
         { children }
       </main>
+      <div className='bg-dark'>
+        <footer className='container py-3 d-flex justify-content-center flex-wrap'>
+          <div className='d-flex justify-content-center flex-wrap gap-1 border-bottom pb-2 mb-2'>
+            <a className='btn btn-dark' href='/homepage'   >Начало</a>
+            <a className='btn btn-dark' href='/lessons'    >Уроци</a>
+            <a className='btn btn-dark' href='/code_editor'>Кодов редактор</a>
+            <a className='btn btn-dark' href='/contacts'   >Контакти</a>
+          </div>
+          <div className='w-100'></div>
+          <img className={ styles.FooterImg } src='/book.svg' />
+        </footer>
+      </div>
     </>
   );
 }

@@ -24,6 +24,7 @@ export default function Home() {
           <div className='col-xl d-flex flex-wrap justify-content-center align-content-center m-0'>
             <h1>Програмирай навсякъде</h1>
             <p>Чрез нашият кодов редактор, може да приложеш твоите новодобити знания изцяло онлайн, без нуждата за допълнителен софтуер.</p>
+            <a className='btn btn-outline-dark'>Започни да програмираш!</a>
           </div>
           <img src='/code_edit.png' className='col-xl' />
         </div>
