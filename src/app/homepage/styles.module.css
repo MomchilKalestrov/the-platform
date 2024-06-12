@@ -23,10 +23,7 @@
 }
 
 .Splash div > img {
-    animation-name: hover;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    animation: hover 20s linear infinite;
 }
 
 .OrganizationsList img {
