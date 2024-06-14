@@ -2,6 +2,10 @@
     font-size: 1.25rem;
 }
 
+body {
+    background-color: var(--bs-dark);
+}
+
 header {
     background-color: var(--bs-dark);
 }
@@ -30,7 +34,11 @@ main div > *:not(:last-child), main > * {
     margin-bottom: 0.5rem;
 }
 
-main div:nth-child(even) {
+main > div:nth-child(odd) {
+    background-color: white;
+}
+
+main > div:nth-child(even) {
     background-color: var(--bs-light);
 }
 
