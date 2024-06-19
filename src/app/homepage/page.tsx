@@ -19,7 +19,8 @@ export default function Home() {
           <p>Без значение от нивото в платформата има уроци на всякакви теми по програмиране. Започни от където желаеш!</p>
         </div>
       </div>
-      <div className='mb-0'>
+      <div className='mb-0
+      '>
         <div className='container px-sm-5 py-3'>
           <div className='row gap-3'>
             <div className='col-xl d-flex flex-wrap justify-content-center align-content-center m-0'>
