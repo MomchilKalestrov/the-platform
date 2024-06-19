@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image';
 import styles from './styles.module.css';
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
               <p>Чрез нашият кодов редактор, може да приложиш твоите новодобити знания изцяло онлайн, без нуждата за допълнителен софтуер.</p>
               <a className='btn btn-outline-dark'>Започни да програмираш!</a>
             </div>
-            <Image src='/code_edit.png' className='col-xl' alt='code exitor' />
+            <img src='/code_edit.png' className='col-xl' alt='code exitor' />
           </div>
         </div>
       </div>
@@ -37,8 +36,8 @@ export default function Home() {
         <div className='container px-sm-5 py-3'>
           <h1>Използва се в:</h1>
           <div className={ styles.OrganizationsList }>
-            <Image src='/pgmt.png' alt='PGMT'/>
-            <Image src='/pgee.png' alt='PGEE'/>
+            <img src='/pgmt.png' alt='PGMT'/>
+            <img src='/pgee.png' alt='PGEE'/>
           </div>
         </div>
       </div>
