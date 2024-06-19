@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CodeBlock from "../../components/code";
 import ListSection from "../../components/listSection";
+import Image from "next/image";
 
 export function RenderLesson(data: string): React.JSX.Element {
     // I'm an idiot. Instead of using static HTML or even just something like EJS,
@@ -20,7 +21,7 @@ export function RenderLesson(data: string): React.JSX.Element {
             case 'code':      html.push(<CodeBlock key={ i } code={ data }/>); break;
             case 'image':
                 html.push(
-                    <img
+                    <Image
                         src={ data.split('<%%>')[1] }
                         alt={ data.split('<%%>')[0] }
                     />

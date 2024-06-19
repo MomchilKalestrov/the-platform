@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { List } from './logic/reader'
-import { RenderMenu } from './logic/renderer'
+import { List } from './logic/reader';
+import { RenderMenu } from './logic/renderer';
+import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './styles.module.css';
 import './global.css';
@@ -18,7 +19,7 @@ export default function RootLayout({
     <>
       <header className='navbar small navbar-dark'>
         <nav className='container navbar-expand-md px-0 px-md-3'>
-          <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
+          <Image className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div className={ styles.SearchContainer }>
             <input id='searchField' className={`form-control ${styles.SearchField}`} placeholder='...'/>
             <button id='searchButton' className={`btn btn-outline-light ${styles.SearchButton}`}>🔎︎</button>

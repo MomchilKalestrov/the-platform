@@ -1,6 +1,6 @@
-import Reader from './logic/reader'
-import { RenderLesson } from './logic/renderer'
-import RenderSearch from './logic/search'
+import Reader from './logic/reader';
+import { RenderLesson } from './logic/renderer';
+import RenderSearch from './logic/search';
 
 // Anything before the return is server sided
 export default function Page({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from './reader'
+import { List } from './reader';
 import Link from "next/link";
 
 // Use an algorithm I ripped straight out of GeeksForGeeks

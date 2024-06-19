@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './styles.module.css';
 import './global.css';
@@ -16,7 +17,7 @@ export default function Layout({
     <>
       <header className='navbar small navbar-dark'>
         <nav className='container navbar-expand-md px-0 px-md-3'>
-          <img className={ styles.NavTitle} src='/head.svg' alt='title'/>
+          <Image className={ styles.NavTitle} src='/head.svg' alt='title'/>
           <div>
             <a className='btn btn-outline-light btn-sm' href='/homepage'   >Начало</a>
             <a className='btn btn-outline-light btn-sm' href='/lessons'    >Уроци</a>
@@ -31,7 +32,7 @@ export default function Layout({
             <h2>The Platform</h2>
             <p>Добре дошли в най-достъпната платформа за начинаещи програмисти. Започни обучението си <a className='text-secondary' href='/lessons'>тук</a>!</p>
           </div>
-          <img className='my-2' src='/splash.svg' />
+          <Image className='my-2' src='/splash.svg' alt='splash'/>
         </div>
       </div>
       <main>
@@ -46,7 +47,7 @@ export default function Layout({
             <a className='btn btn-dark' href='/contacts'   >Контакти</a>
           </div>
           <div className='w-100'></div>
-          <img className={ styles.FooterImg } src='/book.svg' />
+          <Image className={ styles.FooterImg } src='/book.svg' alt='logo'/>
         </footer>
       </div>
     </>
